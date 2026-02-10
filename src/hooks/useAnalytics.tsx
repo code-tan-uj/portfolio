@@ -7,6 +7,7 @@
 
 'use client';
 
+import type { ReactNode } from 'react';
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
@@ -43,7 +44,7 @@ export function useAnalytics() {
  * 
  * Add this to your root layout to enable analytics
  */
-export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
+export function AnalyticsProvider({ children }: { children: ReactNode }) {
   useAnalytics();
   return <>{children}</>;
 }
