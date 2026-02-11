@@ -27,6 +27,9 @@ export async function fetchHygraph<T>(
     throw new Error('HYGRAPH_ENDPOINT is not configured');
   }
 
+  // Debug: Log the endpoint being used (remove in production)
+  console.log('[Hygraph] Using endpoint:', HYGRAPH_ENDPOINT.substring(0, 50) + '...');
+
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
   };
@@ -43,7 +46,14 @@ export async function fetchHygraph<T>(
   });
 
   if (!response.ok) {
-    throw new Error(`Hygraph request failed: ${response.statusText}`);
+    // Get more details about the error
+    const errorText = await response.text();
+    console.error('[Hygraph] Request failed:', {
+      status: response.status,
+      statusText: response.statusText,
+      body: errorText.substring(0, 500),
+    });
+    throw new Error(`Hygraph request failed: ${response.status} ${response.statusText}`);
   }
 
   const json: GraphQLResponse<T> = await response.json();
@@ -62,12 +72,12 @@ export async function fetchHygraph<T>(
 export interface HygraphPortfolio {
   name: string;
   title: string;
-  tagline: string;
-  bio: string;
-  email: string;
-  github: string;
-  linkedin: string;
-  twitter: string;
+  tagline?: string;
+  bio?: string;
+  email?: string;
+  github?: string;
+  linkedin?: string;
+  twitter?: string;
   avatar?: { url: string };
 }
 
@@ -75,14 +85,14 @@ export interface HygraphProject {
   slug: string;
   title: string;
   description: string;
-  longDescription: string;
+  longDescription?: string;
   image?: { url: string };
   technologies: string[];
   category: string;
   featured: boolean;
   liveUrl?: string;
   githubUrl?: string;
-  highlights: string[];
+  highlights?: string[];
   year: number;
 }
 
@@ -96,30 +106,50 @@ export interface HygraphSkill {
 export interface HygraphExperience {
   role: string;
   company: string;
-  location: string;
+  location?: string;
   period: string;
   type: 'work' | 'education';
-  description: string;
-  achievements: string[];
-  technologies: string[];
+  description?: string;
+  achievements?: string[];
+  technologies?: string[];
 }
 
 // ============================================
 // Data Fetching Functions
 // ============================================
 
+/**
+ * Fetches portfolio data from Hygraph.
+ * 
+ * IMPORTANT: Update this query to match your actual Hygraph schema!
+ * Only include fields that you have created in your Portfolio model.
+ * 
+ * To see your schema, go to Hygraph > Schema > Portfolio model
+ */
 export async function getPortfolio(): Promise<HygraphPortfolio | null> {
   try {
-    const data = await fetchHygraph<{ portfolios: HygraphPortfolio[] }>(`
+    // Query matches your actual Hygraph Portfolio model fields
+    // Note: Hygraph field names are case-sensitive!
+    const data = await fetchHygraph<{ portfolios: Array<{
+      name: string;
+      title: string;
+      tagline?: string;
+      bio?: string;
+      email?: string;
+      gitHub?: string;     // Note: capital H
+      linkedIn?: string;   // Note: capital I  
+      twitter?: string;
+      avatar?: { url: string };
+    }> }>(`
       query GetPortfolio {
-        portfolios(first: 1) {
+        portfolios(first: 1, stage: PUBLISHED) {
           name
           title
           tagline
           bio
           email
-          github
-          linkedin
+          gitHub
+          linkedIn
           twitter
           avatar {
             url
@@ -127,7 +157,22 @@ export async function getPortfolio(): Promise<HygraphPortfolio | null> {
         }
       }
     `);
-    return data.portfolios[0] || null;
+    
+    const portfolio = data.portfolios[0];
+    if (!portfolio) return null;
+    
+    // Map to our interface (normalize field names)
+    return {
+      name: portfolio.name,
+      title: portfolio.title,
+      tagline: portfolio.tagline,
+      bio: portfolio.bio,
+      email: portfolio.email,
+      github: portfolio.gitHub || '',
+      linkedin: portfolio.linkedIn || '',
+      twitter: portfolio.twitter || '',
+      avatar: portfolio.avatar,
+    };
   } catch (error) {
     console.error('Failed to fetch portfolio from Hygraph:', error);
     return null;

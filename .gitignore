@@ -92,3 +92,6 @@ next-env.d.ts
 *.log
 *.cache
 .turbo
+Setup.md
+COMPLETE_FEATURES.md
+INDUSTRY_FEATURES.md

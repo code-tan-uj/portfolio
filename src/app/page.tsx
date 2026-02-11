@@ -1,6 +1,6 @@
 import MainLayout from "@/components/layout/MainLayout";
 import Hero from "@/components/sections/Hero";
-import About from "@/components/sections/About";
+import AboutServer from "@/components/sections/AboutServer";
 import Projects from "@/components/sections/Projects";
 import Skills from "@/components/sections/Skills";
 import ExperienceSection from "@/components/sections/Experience";
@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <MainLayout>
       <Hero />
-      <About />
+      <AboutServer />
       <Projects />
       <Skills />
       <ExperienceSection />

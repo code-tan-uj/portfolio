@@ -17,8 +17,19 @@ import { ParallaxSection } from "@/components/animations";
 import { FloatingShapes } from "@/components/effects";
 
 /* ========================================================================== */
-/*  Data — easy to update later or pull from CMS                               */
+/*  Types & Props                                                              */
 /* ========================================================================== */
+
+interface Portfolio {
+  name: string;
+  title: string;
+  bio: string;
+  email: string;
+}
+
+interface AboutProps {
+  portfolio?: Portfolio;
+}
 
 interface Stat {
   label: string;
@@ -27,6 +38,10 @@ interface Stat {
   icon: ReactNode;
 }
 
+/* ========================================================================== */
+/*  Data — fallback if no CMS data provided                                   */
+/* ========================================================================== */
+
 const STATS: Stat[] = [
   { label: "Years Experience", value: 4, suffix: "+", icon: <Briefcase size={20} /> },
   { label: "Projects Completed", value: 30, suffix: "+", icon: <FolderGit2 size={20} /> },
@@ -34,7 +49,7 @@ const STATS: Stat[] = [
   { label: "Coffee Consumed", value: 3, suffix: "k cups", icon: <Coffee size={20} /> },
 ];
 
-const BIO = [
+const DEFAULT_BIO = [
   "I'm a passionate full-stack developer and designer who thrives at the intersection of creativity and engineering. With a strong foundation in modern web technologies, I build performant, accessible, and visually stunning digital experiences.",
   "My journey into tech started with a curiosity about how things work on the internet. That curiosity evolved into a career where I've had the privilege of working on products used by thousands of people — from interactive dashboards to real-time collaboration tools.",
   "When I'm not coding, you'll find me exploring new design trends, contributing to open-source projects, or experimenting with creative coding and generative art. I believe great software is built where empathy meets craftsmanship.",
@@ -266,9 +281,12 @@ function SectionHeader({
 /*  Main About component                                                       */
 /* ========================================================================== */
 
-export default function About() {
+export default function About({ portfolio }: AboutProps = {}) {
   const sectionRef = useRef<HTMLElement>(null);
   const inView = useInView(sectionRef, { once: true, amount: 0.15 });
+
+  // Use Hygraph data if available, otherwise fallback to default
+  const bioText = portfolio?.bio ? [portfolio.bio] : DEFAULT_BIO;
 
   const scrollTo = (href: string) => {
     const el = document.getElementById(href.slice(1));
@@ -346,7 +364,7 @@ export default function About() {
             <motion.div variants={fadeRight} className="flex flex-col gap-8">
               {/* Bio */}
               <div className="flex flex-col gap-5">
-                {BIO.map((paragraph, i) => (
+                {bioText.map((paragraph, i) => (
                   <motion.p
                     key={i}
                     variants={fadeUp}

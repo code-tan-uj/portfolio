@@ -106,8 +106,12 @@ CREATE POLICY "Service role full access to rate_limits" ON rate_limits
 1. Go to **Settings** → **API** (left sidebar)
 2. Copy these values:
    - **Project URL** → `NEXT_PUBLIC_SUPABASE_URL`
-   - **anon public** key → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - **service_role** key → `SUPABASE_SERVICE_ROLE_KEY`
+   - **Publishable key** (browser-safe) → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - **Secret key** (backend-only, click to reveal) → `SUPABASE_SERVICE_ROLE_KEY`
+
+**Note:** If you see "anon" and "service_role" keys, those are legacy names that still work. The mapping is:
+- `anon` key → `Publishable` key (same key, new name)
+- `service_role` key → `Secret` key (same key, new name)
 
 ---
 
@@ -123,11 +127,31 @@ CREATE POLICY "Service role full access to rate_limits" ON rate_limits
    - **Region:** Choose closest
 6. Click **"Create Project"**
 
-### 4.2 Create Content Models
+### 4.2 Create Enumerations First
+
+Before creating models, you need to create Enumerations:
+
+1. Go to **Schema** → **Enumerations** (left sidebar)
+2. Click **"Add Enumeration"**
+3. Create these three enumerations:
+
+**ProjectCategory:**
+- Name: `ProjectCategory`, API ID: `ProjectCategory`
+- Values: `web`, `mobile`, `design`, `opensource`
+
+**SkillCategory:**
+- Name: `SkillCategory`, API ID: `SkillCategory`
+- Values: `frontend`, `backend`, `database`, `tools`, `design`
+
+**ExperienceType:**
+- Name: `ExperienceType`, API ID: `ExperienceType`
+- Values: `work`, `education`
+
+### 4.3 Create Content Models
 
 #### Model 1: Portfolio (Profile)
-1. Go to **Schema** (left sidebar)
-2. Click **"Add Model"**
+1. Go to **Schema** → **Models** (left sidebar)
+2. Click **"Add"** → **"Model"**
 3. Enter:
    - **Display Name:** Portfolio
    - **API ID:** Portfolio
@@ -146,64 +170,66 @@ CREATE POLICY "Service role full access to rate_limits" ON rate_limits
 | Avatar | Asset picker | avatar | |
 
 #### Model 2: Project
-1. Click **"Add Model"**
+1. Click **"Add"** → **"Model"**
 2. Enter:
    - **Display Name:** Project
    - **API ID:** Project
-3. Add these fields:
+3. Click "Add field" and add these fields:
 
-| Field | Type | API ID | Required |
-|-------|------|--------|----------|
-| Slug | Slug | slug | ✅ (Unique) |
-| Title | Single line text | title | ✅ |
-| Description | Multi line text | description | ✅ |
-| Long Description | Rich text | longDescription | |
-| Image | Asset picker | image | |
-| Technologies | Single line text (List) | technologies | |
-| Category | Single line text | category | |
-| Featured | Boolean | featured | |
-| Live URL | Single line text | liveUrl | |
-| GitHub URL | Single line text | githubUrl | |
-| Highlights | Single line text (List) | highlights | |
-| Year | Integer | year | |
+| Field | Hygraph Field Type | API ID | Configuration |
+|-------|-------------------|--------|---------------|
+| Slug | **Slug** | slug | ✅ Required, ✅ Unique |
+| Title | **Single line text** | title | ✅ Required |
+| Description | **Multi line text** | description | ✅ Required |
+| Long Description | **Multi line text** | longDescription | (Optional) |
+| Image | **Asset picker** | image | (Optional) |
+| Technologies | **Single line text** | technologies | ✅ Allow multiple values |
+| Category | **Enumeration** | category | Select "ProjectCategory", ✅ Required |
+| Featured | **Boolean** | featured | Default: false |
+| Live URL | **Single line text** | liveUrl | (Optional) |
+| GitHub URL | **Single line text** | githubUrl | (Optional) |
+| Highlights | **Multi line text** | highlights | ✅ Allow multiple values |
+| Year | **Integer** | year | ✅ Required |
+
+**Note:** When adding "Category" field, select **Enumeration** type, then choose "ProjectCategory" from dropdown.
 
 #### Model 3: Skill
-1. Click **"Add Model"**
+1. Click **"Add"** → **"Model"**
 2. Enter: **Skill** / **Skill**
 3. Add fields:
 
-| Field | Type | API ID | Required |
-|-------|------|--------|----------|
-| Name | Single line text | name | ✅ |
-| Category | Single line text | category | ✅ |
-| Level | Integer | level | ✅ |
-| Icon | Single line text | icon | |
+| Field | Hygraph Field Type | API ID | Configuration |
+|-------|-------------------|--------|---------------|
+| Name | **Single line text** | name | ✅ Required |
+| Category | **Enumeration** | category | Select "SkillCategory", ✅ Required |
+| Level | **Integer** | level | ✅ Required (0-100) |
+| Icon | **Single line text** | icon | ✅ Required |
 
 #### Model 4: Experience
-1. Click **"Add Model"**
+1. Click **"Add"** → **"Model"**
 2. Enter: **Experience** / **Experience**
 3. Add fields:
 
-| Field | Type | API ID | Required |
-|-------|------|--------|----------|
-| Role | Single line text | role | ✅ |
-| Company | Single line text | company | ✅ |
-| Location | Single line text | location | |
-| Period | Single line text | period | ✅ |
-| Type | Enumeration (work/education) | type | ✅ |
-| Description | Multi line text | description | |
-| Achievements | Single line text (List) | achievements | |
-| Technologies | Single line text (List) | technologies | |
+| Field | Hygraph Field Type | API ID | Configuration |
+|-------|-------------------|--------|---------------|
+| Role | **Single line text** | role | ✅ Required |
+| Company | **Single line text** | company | ✅ Required |
+| Location | **Single line text** | location | (Optional) |
+| Period | **Single line text** | period | ✅ Required |
+| Type | **Enumeration** | type | Select "ExperienceType", ✅ Required |
+| Description | **Multi line text** | description | ✅ Required |
+| Achievements | **Multi line text** | achievements | ✅ Allow multiple values |
+| Technologies | **Single line text** | technologies | ✅ Allow multiple values |
 
-### 4.3 Get API Endpoint
+### 4.4 Get API Endpoint
 1. Go to **Settings** → **API Access**
 2. Under **Content API**, copy the endpoint → `HYGRAPH_ENDPOINT`
 3. Under **Permanent Auth Tokens**, click **"Create token"**
    - Name: Portfolio Read
-   - Permissions: Content: Read
+   - Permissions: Content: Read (expand each model and check Read)
 4. Copy the token → `HYGRAPH_TOKEN`
 
-### 4.4 Add Your Content
+### 4.5 Add Your Content
 1. Go to **Content** (left sidebar)
 2. Click on **Portfolio** → **Create entry**
 3. Fill in your profile information
