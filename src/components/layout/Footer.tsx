@@ -16,22 +16,22 @@ interface SocialLink {
 const SOCIALS: SocialLink[] = [
   {
     label: "GitHub",
-    href: "https://github.com",
+    href: "https://github.com/code-tan-uj",
     icon: <Github size={20} />,
   },
   {
     label: "LinkedIn",
-    href: "https://linkedin.com",
+    href: "https://linkedin.com/in/tanuj-sansare",
     icon: <Linkedin size={20} />,
   },
   {
     label: "Twitter",
-    href: "https://twitter.com",
+    href: "https://twitter.com/tanujsansare",
     icon: <Twitter size={20} />,
   },
   {
     label: "Email",
-    href: "mailto:hello@example.com",
+    href: "mailto:tanujsansare@gmail.com",
     icon: <Mail size={20} />,
   },
 ];

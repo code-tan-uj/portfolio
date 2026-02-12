@@ -11,12 +11,12 @@ export const config = {
   // =========================================
   site: {
     name: "Tanuj Sansare",
-    title: "Portfolio — Tanuj Sansare",
-    description: "Modern portfolio showcasing projects, skills, and experience.",
+    title: "Portfolio — Tanuj Sansare | AI Engineer",
+    description: "AI Engineer specializing in LLMs, Vision Transformers, RAG pipelines, and enterprise-scale ML systems. Building AI that ships to millions.",
     url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
     author: {
       name: "Tanuj Sansare",
-      email: "hello@example.com",
+      email: "tanujsansare@gmail.com",
       twitter: "@tanujsansare",
     },
   },

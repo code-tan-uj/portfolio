@@ -18,10 +18,10 @@ import { Particles, MagneticButton, TextGradient } from "@/components/effects";
 /* -------------------------------------------------------------------------- */
 
 const ROLES = [
+  "AI Engineer",
   "Full Stack Developer",
-  "UI/UX Designer",
-  "Creative Developer",
-  "Open Source Enthusiast",
+  "Generative AI Specialist",
+  "ML Systems Architect",
 ];
 
 interface SocialLink {
@@ -31,10 +31,10 @@ interface SocialLink {
 }
 
 const SOCIALS: SocialLink[] = [
-  { label: "GitHub", href: "https://github.com", icon: <Github size={20} /> },
-  { label: "LinkedIn", href: "https://linkedin.com", icon: <Linkedin size={20} /> },
+  { label: "GitHub", href: "https://github.com/code-tan-uj", icon: <Github size={20} /> },
+  { label: "LinkedIn", href: "https://linkedin.com/in/tanuj-sansare", icon: <Linkedin size={20} /> },
   { label: "Twitter", href: "https://twitter.com", icon: <Twitter size={20} /> },
-  { label: "Email", href: "mailto:hello@example.com", icon: <Mail size={20} /> },
+  { label: "Email", href: "mailto:tanujsansare@gmail.com", icon: <Mail size={20} /> },
 ];
 
 /* -------------------------------------------------------------------------- */
@@ -311,9 +311,9 @@ export default function Hero() {
             marginBottom: "var(--space-10)",
           }}
         >
-          I craft pixel-perfect, accessible interfaces and build robust
-          full-stack applications. Passionate about blending design and
-          engineering to create delightful digital experiences.
+          I build production-grade AI systems — from LLM agents and RAG pipelines
+          to vision transformers. Passionate about turning cutting-edge ML research
+          into scalable solutions that ship to millions.
         </motion.p>
 
         {/* ── CTA Buttons ──────────────────────────────────────── */}

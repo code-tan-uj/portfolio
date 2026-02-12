@@ -69,12 +69,12 @@ const staggerItem = {
 /*  Contact info data                                                          */
 /* ========================================================================== */
 
-const CONTACT_EMAIL = "hello@example.com";
-const CONTACT_LOCATION = "San Francisco, CA";
+const CONTACT_EMAIL = "tanujsansare@gmail.com";
+const CONTACT_LOCATION = "Pune, India";
 
 const SOCIALS = [
-  { label: "GitHub", href: "https://github.com", icon: Github },
-  { label: "LinkedIn", href: "https://linkedin.com", icon: Linkedin },
+  { label: "GitHub", href: "https://github.com/code-tan-uj", icon: Github },
+  { label: "LinkedIn", href: "https://linkedin.com/in/tanuj-sansare", icon: Linkedin },
   { label: "Twitter", href: "https://twitter.com", icon: Twitter },
   { label: "Email", href: `mailto:${CONTACT_EMAIL}`, icon: Mail },
 ];

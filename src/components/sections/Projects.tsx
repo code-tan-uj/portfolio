@@ -17,7 +17,7 @@ import { GlowEffect } from "@/components/effects";
 /*  Types                                                                      */
 /* ========================================================================== */
 
-export type ProjectCategory = "web" | "mobile" | "design" | "opensource";
+export type ProjectCategory = "ai" | "web" | "research" | "performance";
 
 export interface Project {
   id: string;
@@ -31,6 +31,10 @@ export interface Project {
   category: ProjectCategory;
 }
 
+interface ProjectsProps {
+  projects?: Project[];
+}
+
 /* ========================================================================== */
 /*  Sample data — swap for CMS later                                           */
 /* ========================================================================== */
@@ -38,74 +42,54 @@ export interface Project {
 const PROJECTS: Project[] = [
   {
     id: "1",
-    slug: "cloudsync-dashboard",
-    title: "CloudSync Dashboard",
+    slug: "gen-ai-bannerization",
+    title: "Gen AI Bannerization Platform",
     description:
-      "A real-time analytics dashboard for cloud infrastructure monitoring with live metrics, alert management, and team collaboration features.",
+      "Enterprise-scale AI system automating banner creation with multi-agent LLMs, Vision Transformer QC (98% accuracy), and distributed processing — generating 9,000+ production-ready banners daily.",
     image: "/projects/project-1.svg",
-    tags: ["React", "TypeScript", "Node.js", "WebSocket"],
-    liveUrl: "#",
-    githubUrl: "#",
-    category: "web",
+    tags: ["Vision Transformers", "LangGraph", "RabbitMQ", "Celery", "FastAPI"],
+    category: "ai",
   },
   {
     id: "2",
-    slug: "artistry-design-platform",
-    title: "Artistry — Design Platform",
+    slug: "release-agent",
+    title: "Release Agent — Autonomous DevOps",
     description:
-      "A collaborative design platform where creators share, remix, and sell digital artwork with built-in licensing and version control.",
+      "Agentic AI system that automates software releases end-to-end — from changelog generation to compliance checks — boosting developer velocity by ~15%.",
     image: "/projects/project-2.svg",
-    tags: ["Next.js", "Prisma", "PostgreSQL", "Tailwind"],
-    liveUrl: "#",
-    githubUrl: "#",
-    category: "design",
+    tags: ["LangGraph", "AutoGen", "GitHub API", "Python", "Redis"],
+    category: "ai",
   },
   {
     id: "3",
-    slug: "devflow-cli",
-    title: "DevFlow CLI",
+    slug: "sentimeter-ai",
+    title: "Sentimeter AI — Chat Intelligence",
     description:
-      "An open-source command-line toolkit that streamlines developer workflows — scaffolding, linting, testing, and deployment in one tool.",
+      "Research initiative at Samsung transforming chat screenshots into actionable sentiment intelligence using OCR, speaker diarization, and fine-tuned RoBERTa (0.92+ F1-score).",
     image: "/projects/project-3.svg",
-    tags: ["TypeScript", "Node.js", "CLI", "Open Source"],
-    githubUrl: "#",
-    category: "opensource",
+    tags: ["RoBERTa", "BERT", "OpenCV", "EasyOCR", "NLP"],
+    category: "research",
   },
   {
     id: "4",
-    slug: "foodiemap",
-    title: "FoodieMap",
+    slug: "chat-with-files",
+    title: "Chat With Your Files — RAG System",
     description:
-      "A mobile-first restaurant discovery app with AI-powered recommendations, real-time wait times, and social dining features.",
+      "Production-grade RAG application enabling natural language queries over enterprise documents — built in 8 weeks from research to deployment at American Axle Manufacturing.",
     image: "/projects/project-4.svg",
-    tags: ["React Native", "MongoDB", "Express", "Maps API"],
-    liveUrl: "#",
-    githubUrl: "#",
-    category: "mobile",
+    tags: ["LangChain", "FAISS", "Cohere", "Streamlit", "Python"],
+    category: "ai",
   },
   {
     id: "5",
-    slug: "notevault",
-    title: "NoteVault",
+    slug: "kpi-portal",
+    title: "KPI Portal — Analytics Dashboard",
     description:
-      "An end-to-end encrypted note-taking app with Markdown support, cross-device sync, and offline-first architecture.",
+      "Real-time executive dashboard consolidating multi-dimensional KPIs with AI-powered insights, supporting 2M+ concurrent users at Bajaj Finserv.",
     image: "/projects/project-5.svg",
-    tags: ["Next.js", "TypeScript", "IndexedDB", "Tailwind"],
-    liveUrl: "#",
-    githubUrl: "#",
+    tags: ["React", "TypeScript", "Node.js", "Redis", "MongoDB"],
     category: "web",
-  },
-  {
-    id: "6",
-    slug: "pixelmotion",
-    title: "PixelMotion",
-    description:
-      "A creative coding playground for generative art. Export to SVG, GIF, or video. Built for artists who think in algorithms.",
-    image: "/projects/project-6.svg",
-    tags: ["React", "Canvas API", "WebGL", "Framer Motion"],
-    liveUrl: "#",
-    category: "design",
-  },
+  }
 ];
 
 /* ========================================================================== */
@@ -119,10 +103,10 @@ interface FilterTab {
 
 const FILTERS: FilterTab[] = [
   { key: "all", label: "All" },
-  { key: "web", label: "Web Apps" },
-  { key: "mobile", label: "Mobile Apps" },
-  { key: "design", label: "UI/UX Design" },
-  { key: "opensource", label: "Open Source" },
+  { key: "ai", label: "AI/ML" },
+  { key: "web", label: "Full Stack" },
+  { key: "research", label: "Research" },
+  { key: "performance", label: "Performance" },
 ];
 
 /* ========================================================================== */
@@ -417,7 +401,7 @@ function ProjectCard({ project }: { project: Project }) {
 
         {/* Tags */}
         <div className="flex flex-wrap gap-1.5 mt-auto">
-          {project.tags.map((tag) => (
+          {Array.isArray(project.tags) && project.tags.map((tag) => (
             <Badge key={tag} variant="default" shape="pill">
               {tag}
             </Badge>
@@ -499,19 +483,22 @@ function ProjectCard({ project }: { project: Project }) {
 const INITIAL_COUNT = 6;
 const LOAD_INCREMENT = 6;
 
-export default function Projects() {
+export default function Projects({ projects: projectsProp }: ProjectsProps = {}) {
   const sectionRef = useRef<HTMLElement>(null);
   const inView = useInView(sectionRef, { once: true, amount: 0.1 });
 
   const [activeFilter, setActiveFilter] = useState<string>("all");
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
 
+  // Use Hygraph data if available, otherwise fallback to sample data
+  const allProjects = projectsProp || PROJECTS;
+
   const filtered = useMemo(
     () =>
       activeFilter === "all"
-        ? PROJECTS
-        : PROJECTS.filter((p) => p.category === activeFilter),
-    [activeFilter],
+        ? allProjects
+        : allProjects.filter((p) => p.category === activeFilter),
+    [activeFilter, allProjects],
   );
 
   const visible = filtered.slice(0, visibleCount);

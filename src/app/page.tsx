@@ -1,7 +1,7 @@
 import MainLayout from "@/components/layout/MainLayout";
 import Hero from "@/components/sections/Hero";
 import AboutServer from "@/components/sections/AboutServer";
-import Projects from "@/components/sections/Projects";
+import ProjectsServer from "@/components/sections/ProjectsServer";
 import Skills from "@/components/sections/Skills";
 import ExperienceSection from "@/components/sections/Experience";
 import Contact from "@/components/sections/Contact";
@@ -11,7 +11,7 @@ export default function Home() {
     <MainLayout>
       <Hero />
       <AboutServer />
-      <Projects />
+      <ProjectsServer />
       <Skills />
       <ExperienceSection />
       <Contact />

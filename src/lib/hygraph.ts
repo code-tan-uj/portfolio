@@ -181,9 +181,22 @@ export async function getPortfolio(): Promise<HygraphPortfolio | null> {
 
 export async function getAllProjects(): Promise<HygraphProject[]> {
   try {
-    const data = await fetchHygraph<{ projects: HygraphProject[] }>(`
+    const data = await fetchHygraph<{ projects: Array<{
+      slug: string;
+      title: string;
+      description: string;
+      longDescription?: string;
+      image?: { url: string };
+      technologies: string[];
+      category: string;
+      featured: boolean;
+      liveUrl?: string;      // Lowercase 'url'
+      gitHubUrl?: string;    // Capital H, lowercase 'url'
+      highlights?: string[];
+      year: number;
+    }> }>(`
       query GetAllProjects {
-        projects(orderBy: year_DESC) {
+        projects(orderBy: year_DESC, stage: PUBLISHED) {
           slug
           title
           description
@@ -195,13 +208,28 @@ export async function getAllProjects(): Promise<HygraphProject[]> {
           category
           featured
           liveUrl
-          githubUrl
+          gitHubUrl
           highlights
           year
         }
       }
     `);
-    return data.projects;
+
+    // Map to our interface (normalize field names)
+    return data.projects.map(p => ({
+      slug: p.slug,
+      title: p.title,
+      description: p.description,
+      longDescription: p.longDescription,
+      image: p.image,
+      technologies: p.technologies,
+      category: p.category,
+      featured: p.featured,
+      liveUrl: p.liveUrl,
+      githubUrl: p.gitHubUrl,
+      highlights: p.highlights,
+      year: p.year,
+    }));
   } catch (error) {
     console.error('Failed to fetch projects from Hygraph:', error);
     return [];
@@ -210,9 +238,22 @@ export async function getAllProjects(): Promise<HygraphProject[]> {
 
 export async function getProject(slug: string): Promise<HygraphProject | null> {
   try {
-    const data = await fetchHygraph<{ project: HygraphProject | null }>(`
+    const data = await fetchHygraph<{ project: {
+      slug: string;
+      title: string;
+      description: string;
+      longDescription?: string;
+      image?: { url: string };
+      technologies: string[];
+      category: string;
+      featured: boolean;
+      liveUrl?: string;
+      gitHubUrl?: string;
+      highlights?: string[];
+      year: number;
+    } | null }>(`
       query GetProject($slug: String!) {
-        project(where: { slug: $slug }) {
+        project(where: { slug: $slug }, stage: PUBLISHED) {
           slug
           title
           description
@@ -224,13 +265,30 @@ export async function getProject(slug: string): Promise<HygraphProject | null> {
           category
           featured
           liveUrl
-          githubUrl
+          gitHubUrl
           highlights
           year
         }
       }
     `, { slug });
-    return data.project;
+
+    if (!data.project) return null;
+
+    // Map to our interface
+    return {
+      slug: data.project.slug,
+      title: data.project.title,
+      description: data.project.description,
+      longDescription: data.project.longDescription,
+      image: data.project.image,
+      technologies: data.project.technologies,
+      category: data.project.category,
+      featured: data.project.featured,
+      liveUrl: data.project.liveUrl,
+      githubUrl: data.project.gitHubUrl,
+      highlights: data.project.highlights,
+      year: data.project.year,
+    };
   } catch (error) {
     console.error('Failed to fetch project from Hygraph:', error);
     return null;
@@ -239,9 +297,20 @@ export async function getProject(slug: string): Promise<HygraphProject | null> {
 
 export async function getFeaturedProjects(): Promise<HygraphProject[]> {
   try {
-    const data = await fetchHygraph<{ projects: HygraphProject[] }>(`
+    const data = await fetchHygraph<{ projects: Array<{
+      slug: string;
+      title: string;
+      description: string;
+      image?: { url: string };
+      technologies: string[];
+      category: string;
+      liveUrl?: string;
+      gitHubUrl?: string;
+      year: number;
+      featured: boolean;
+    }> }>(`
       query GetFeaturedProjects {
-        projects(where: { featured: true }, orderBy: year_DESC, first: 6) {
+        projects(where: { featured: true }, orderBy: year_DESC, first: 6, stage: PUBLISHED) {
           slug
           title
           description
@@ -251,12 +320,26 @@ export async function getFeaturedProjects(): Promise<HygraphProject[]> {
           technologies
           category
           liveUrl
-          githubUrl
+          gitHubUrl
           year
+          featured
         }
       }
     `);
-    return data.projects;
+
+    // Map to our interface
+    return data.projects.map(p => ({
+      slug: p.slug,
+      title: p.title,
+      description: p.description,
+      image: p.image,
+      technologies: p.technologies,
+      category: p.category,
+      featured: p.featured,
+      liveUrl: p.liveUrl,
+      githubUrl: p.gitHubUrl,
+      year: p.year,
+    }));
   } catch (error) {
     console.error('Failed to fetch featured projects from Hygraph:', error);
     return [];
@@ -267,7 +350,7 @@ export async function getSkills(): Promise<HygraphSkill[]> {
   try {
     const data = await fetchHygraph<{ skills: HygraphSkill[] }>(`
       query GetSkills {
-        skills(orderBy: level_DESC) {
+        skills(orderBy: level_DESC, stage: PUBLISHED) {
           name
           category
           level
@@ -286,7 +369,7 @@ export async function getExperiences(): Promise<HygraphExperience[]> {
   try {
     const data = await fetchHygraph<{ experiences: HygraphExperience[] }>(`
       query GetExperiences {
-        experiences(orderBy: createdAt_DESC) {
+        experiences(orderBy: createdAt_DESC, stage: PUBLISHED) {
           role
           company
           location
