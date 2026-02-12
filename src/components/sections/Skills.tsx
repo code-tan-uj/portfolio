@@ -75,10 +75,6 @@ const ICON_MAP: Record<string, LucideIcon> = {
   eye: Eye,
 };
 
-function getIcon(key: string): LucideIcon {
-  return ICON_MAP[key] ?? Code2;
-}
-
 /* ========================================================================== */
 /*  Animation variants                                                         */
 /* ========================================================================== */
@@ -270,7 +266,7 @@ function ProficiencyBar({ value, inView }: { value: number; inView: boolean }) {
 /* -------------------------------------------------------------------------- */
 
 function SkillCard({ skill, inView }: { skill: Skill; inView: boolean }) {
-  const Icon = getIcon(skill.icon);
+  const IconComponent = ICON_MAP[skill.icon] ?? Code2;
 
   return (
     <motion.div
@@ -302,7 +298,7 @@ function SkillCard({ skill, inView }: { skill: Skill; inView: boolean }) {
           color: "var(--color-primary)",
         }}
       >
-        <Icon size={28} />
+        <IconComponent size={28} />
       </div>
 
       {/* Name */}

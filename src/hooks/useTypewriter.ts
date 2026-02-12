@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface UseTypewriterOptions {
   words: string[];
@@ -34,37 +34,35 @@ export function useTypewriter({
 
   const currentWord = words[wordIndex] ?? "";
 
-  const tick = useCallback(() => {
-    if (!isDeleting) {
-      // Typing forward
-      if (charIndex < currentWord.length) {
-        setCharIndex((c) => c + 1);
-        timeoutRef.current = setTimeout(tick, typeSpeed);
-      } else {
-        // Word complete — pause, then start deleting
-        timeoutRef.current = setTimeout(() => {
-          setIsDeleting(true);
-          timeoutRef.current = setTimeout(tick, deleteSpeed);
-        }, pauseDuration);
-      }
-    } else {
-      // Deleting
-      if (charIndex > 0) {
-        setCharIndex((c) => c - 1);
-        timeoutRef.current = setTimeout(tick, deleteSpeed);
-      } else {
-        // Deleted — move to next word
-        setIsDeleting(false);
-        setWordIndex((i) => (i + 1) % words.length);
-        timeoutRef.current = setTimeout(tick, typeSpeed);
-      }
-    }
-  }, [charIndex, currentWord.length, deleteSpeed, isDeleting, pauseDuration, typeSpeed, words.length]);
-
   useEffect(() => {
-    timeoutRef.current = setTimeout(tick, typeSpeed);
+    const tick = () => {
+      if (!isDeleting) {
+        // Typing forward
+        if (charIndex < currentWord.length) {
+          setCharIndex((c) => c + 1);
+          timeoutRef.current = setTimeout(tick, typeSpeed);
+        } else {
+          // Word complete — pause, then start deleting
+          timeoutRef.current = setTimeout(() => {
+            setIsDeleting(true);
+          }, pauseDuration);
+        }
+      } else {
+        // Deleting
+        if (charIndex > 0) {
+          setCharIndex((c) => c - 1);
+          timeoutRef.current = setTimeout(tick, deleteSpeed);
+        } else {
+          // Deleted — move to next word
+          setIsDeleting(false);
+          setWordIndex((i) => (i + 1) % words.length);
+        }
+      }
+    };
+
+    timeoutRef.current = setTimeout(tick, isDeleting ? deleteSpeed : typeSpeed);
     return () => clearTimeout(timeoutRef.current);
-  }, [tick, typeSpeed]);
+  }, [charIndex, currentWord.length, deleteSpeed, isDeleting, pauseDuration, typeSpeed, words.length]);
 
   return {
     text: currentWord.slice(0, charIndex),

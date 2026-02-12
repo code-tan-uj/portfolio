@@ -33,9 +33,9 @@ export async function getPortfolio(): Promise<Portfolio> {
         return {
           name: data.name,
           title: data.title,
-          tagline: data.tagline,
-          bio: data.bio,
-          email: data.email,
+          tagline: data.tagline ?? '',
+          bio: data.bio ?? '',
+          email: data.email ?? '',
           github: data.github,
           linkedin: data.linkedin,
           twitter: data.twitter,
@@ -245,7 +245,16 @@ export async function getExperiences(): Promise<Experience[]> {
     try {
       const data = await hygraph.getExperiences();
       if (data && data.length > 0) {
-        return data;
+        return data.map((exp) => ({
+          role: exp.role,
+          company: exp.company,
+          location: exp.location,
+          period: exp.period,
+          type: exp.type,
+          description: exp.description ?? '',
+          achievements: exp.achievements,
+          technologies: exp.technologies,
+        }));
       }
     } catch (error) {
       console.warn('Failed to fetch experiences from Hygraph:', error);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 
 interface UseCountUpOptions {
   /** Target number to count to */
@@ -25,18 +25,27 @@ export function useCountUp({
 }: UseCountUpOptions): number {
   const [value, setValue] = useState(start);
   const rafRef = useRef<number>(undefined);
+  const startTimeRef = useRef<number | null>(null);
+
+  // When not enabled, return start value directly
+  const displayValue = useMemo(() => {
+    if (!enabled) return start;
+    return value;
+  }, [enabled, start, value]);
 
   useEffect(() => {
     if (!enabled) {
-      setValue(start);
+      startTimeRef.current = null;
       return;
     }
 
-    const startTime = performance.now();
     const delta = end - start;
 
     function frame(now: number) {
-      const elapsed = now - startTime;
+      if (startTimeRef.current === null) {
+        startTimeRef.current = now;
+      }
+      const elapsed = now - startTimeRef.current;
       const progress = Math.min(elapsed / duration, 1);
       // ease-out quad
       const eased = 1 - (1 - progress) * (1 - progress);
@@ -47,11 +56,12 @@ export function useCountUp({
       }
     }
 
+    startTimeRef.current = null;
     rafRef.current = requestAnimationFrame(frame);
     return () => {
       if (rafRef.current !== undefined) cancelAnimationFrame(rafRef.current);
     };
   }, [start, end, duration, enabled]);
 
-  return value;
+  return displayValue;
 }

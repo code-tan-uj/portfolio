@@ -64,21 +64,6 @@ const nodeVariants = {
 };
 
 /* ========================================================================== */
-/*  Helpers                                                                    */
-/* ========================================================================== */
-
-function getTypeIcon(type: ExperienceType) {
-  switch (type) {
-    case "work":
-      return Briefcase;
-    case "education":
-      return GraduationCap;
-    case "certification":
-      return Award;
-  }
-}
-
-/* ========================================================================== */
 /*  Sub-components                                                             */
 /* ========================================================================== */
 
@@ -199,8 +184,14 @@ function FilterTabs({
 
 /* -------------------------------------------------------------------------- */
 
+const ICON_MAP = {
+  work: Briefcase,
+  education: GraduationCap,
+  certification: Award,
+} as const;
+
 function TimelineNode({ type, isCurrent }: { type: ExperienceType; isCurrent: boolean }) {
-  const Icon = getTypeIcon(type);
+  const IconComponent = ICON_MAP[type];
 
   return (
     <motion.div
@@ -215,7 +206,7 @@ function TimelineNode({ type, isCurrent }: { type: ExperienceType; isCurrent: bo
         flexShrink: 0,
       }}
     >
-      <Icon size={18} />
+      <IconComponent size={18} />
       {isCurrent && (
         <motion.div
           className="absolute inset-0 rounded-full"

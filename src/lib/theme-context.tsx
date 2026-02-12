@@ -5,6 +5,7 @@ import {
   useCallback,
   useEffect,
   useState,
+  useRef,
   type ReactNode,
 } from "react";
 
@@ -36,23 +37,29 @@ function getStoredTheme(): Theme | null {
   return null;
 }
 
+function getInitialTheme(): Theme {
+  if (typeof window === "undefined") return "light";
+  return getStoredTheme() ?? getSystemPreference();
+}
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("light");
-  const [mounted, setMounted] = useState(false);
+  const [theme, setThemeState] = useState<Theme>(getInitialTheme);
+  const mountedRef = useRef(false);
 
-  // Initialise from localStorage → system preference
+  // Apply data-theme attribute and persist (after first render)
   useEffect(() => {
-    const initial = getStoredTheme() ?? getSystemPreference();
-    setThemeState(initial);
-    setMounted(true);
-  }, []);
-
-  // Apply data-theme attribute and persist
-  useEffect(() => {
-    if (!mounted) return;
+    if (!mountedRef.current) {
+      mountedRef.current = true;
+      return;
+    }
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem(STORAGE_KEY, theme);
-  }, [theme, mounted]);
+  }, [theme]);
+
+  // Apply initial theme on mount
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  });
 
   // Listen for OS-level theme changes (when no stored preference)
   useEffect(() => {
@@ -75,10 +82,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   // Always provide context so consumers work during SSR.
-  // Hide visually until hydrated to prevent flash of wrong theme.
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
-      {mounted ? children : <div style={{ visibility: "hidden" }}>{children}</div>}
+      {children}
     </ThemeContext.Provider>
   );
 }

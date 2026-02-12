@@ -117,6 +117,9 @@ export default function Cursor({
     });
     observer.observe(document.body, { childList: true, subtree: true });
 
+    // Capture raf id for cleanup
+    const rafId = rafRef.current;
+
     return () => {
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mousedown", onMouseDown);
@@ -125,7 +128,7 @@ export default function Cursor({
       document.removeEventListener("mouseenter", onMouseEnterWindow);
       detach();
       observer.disconnect();
-      if (rafRef.current !== undefined) cancelAnimationFrame(rafRef.current);
+      if (rafId !== undefined) cancelAnimationFrame(rafId);
     };
   }, [
     enabled,
