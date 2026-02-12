@@ -85,7 +85,7 @@ const mobileLinkVariants = {
 /* -------------------------------------------------------------------------- */
 
 export default function GlassNavbar() {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme, mounted } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("#home");
@@ -292,14 +292,16 @@ export default function GlassNavbar() {
               >
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.span
-                    key={theme}
+                    key={mounted ? theme : "loading"}
                     initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
                     animate={{ rotate: 0, opacity: 1, scale: 1 }}
                     exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
                     transition={{ duration: 0.25 }}
                     className="absolute"
                   >
-                    {theme === "light" ? (
+                    {!mounted ? (
+                      <Sun size={18} />
+                    ) : theme === "light" ? (
                       <Moon size={18} />
                     ) : (
                       <Sun size={18} />

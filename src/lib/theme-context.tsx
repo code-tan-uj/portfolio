@@ -4,8 +4,7 @@ import {
   createContext,
   useCallback,
   useEffect,
-  useState,
-  useRef,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 
@@ -15,6 +14,7 @@ export interface ThemeContextValue {
   theme: Theme;
   toggleTheme: () => void;
   setTheme: (theme: Theme) => void;
+  mounted: boolean;
 }
 
 const STORAGE_KEY = "portfolio-theme";
@@ -24,49 +24,72 @@ export const ThemeContext = createContext<ThemeContextValue | undefined>(
 );
 
 function getSystemPreference(): Theme {
-  if (typeof window === "undefined") return "light";
   return window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";
 }
 
-function getStoredTheme(): Theme | null {
-  if (typeof window === "undefined") return null;
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored === "light" || stored === "dark") return stored;
-  return null;
+// Theme store with subscription pattern for useSyncExternalStore
+let currentTheme: Theme = "light";
+const listeners = new Set<() => void>();
+
+function getSnapshot(): Theme {
+  return currentTheme;
 }
 
-function getInitialTheme(): Theme {
-  if (typeof window === "undefined") return "light";
-  return getStoredTheme() ?? getSystemPreference();
+function getServerSnapshot(): Theme {
+  return "light"; // Always light on server for consistency
+}
+
+function subscribe(listener: () => void): () => void {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
+}
+
+function setThemeInternal(newTheme: Theme) {
+  currentTheme = newTheme;
+  listeners.forEach((listener) => listener());
+}
+
+// Custom hook to track mounted state
+function useMounted() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(getInitialTheme);
-  const mountedRef = useRef(false);
+  const mounted = useMounted();
+  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  // Apply data-theme attribute and persist (after first render)
+  // Initialize theme on mount (client-side only)
   useEffect(() => {
-    if (!mountedRef.current) {
-      mountedRef.current = true;
-      return;
-    }
+    const stored = localStorage.getItem(STORAGE_KEY);
+    const initialTheme: Theme = 
+      stored === "light" || stored === "dark" 
+        ? stored 
+        : getSystemPreference();
+    
+    setThemeInternal(initialTheme);
+    document.documentElement.setAttribute("data-theme", initialTheme);
+  }, []);
+
+  // Apply data-theme attribute and persist on theme change (after mount)
+  useEffect(() => {
+    if (!mounted) return;
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem(STORAGE_KEY, theme);
-  }, [theme]);
-
-  // Apply initial theme on mount
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-  });
+  }, [theme, mounted]);
 
   // Listen for OS-level theme changes (when no stored preference)
   useEffect(() => {
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
     const handler = (e: MediaQueryListEvent) => {
-      if (!getStoredTheme()) {
-        setThemeState(e.matches ? "dark" : "light");
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (!stored) {
+        setThemeInternal(e.matches ? "dark" : "light");
       }
     };
     mq.addEventListener("change", handler);
@@ -74,16 +97,16 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const setTheme = useCallback((t: Theme) => {
-    setThemeState(t);
+    setThemeInternal(t);
   }, []);
 
   const toggleTheme = useCallback(() => {
-    setThemeState((prev) => (prev === "light" ? "dark" : "light"));
+    setThemeInternal(currentTheme === "light" ? "dark" : "light");
   }, []);
 
   // Always provide context so consumers work during SSR.
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme, mounted }}>
       {children}
     </ThemeContext.Provider>
   );
