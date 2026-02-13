@@ -31,7 +31,7 @@ Translation: Pages felt slow, interactions lagged, and layouts shifted around li
 
 ## Optimization Strategies
 
-### 🖼️ Image Optimization (The Biggest Win)
+### Image Optimization (The Biggest Win)
 
 **Format Conversion**
 ```
@@ -45,7 +45,7 @@ Result: 30-40% size reduction
 - Lazy loading with Intersection Observer
 - Progressive JPEG for perceived performance
 
-### ⚡ JavaScript Optimization
+### JavaScript Optimization
 
 **Bundle Reduction**
 - Code splitting per route with dynamic imports
@@ -58,7 +58,7 @@ Result: 30-40% size reduction
 - Web Workers for CPU-intensive operations
 - Service Workers for offline functionality
 
-### 🎨 CSS Optimization
+### CSS Optimization
 
 **Critical Path CSS**
 ```
@@ -70,7 +70,7 @@ Strategy:
 Result: 45% reduction in unused CSS
 ```
 
-### 🖥️ Node.js Middleware
+### Node.js Middleware
 
 **Backend Performance**
 - Response compression (gzip + brotli)
@@ -117,7 +117,7 @@ Result: 45% reduction in unused CSS
 | Page Load Time | 4.5s | 1.8s | 60% ↓ |
 | Time to Interactive | 6.2s | 2.3s | 63% ↓ |
 
-**All metrics now in Google's "Good" (green) range!** ✅
+**All metrics now in Google's "Good" (green) range!**
 
 ## Technical Deep Dive
 

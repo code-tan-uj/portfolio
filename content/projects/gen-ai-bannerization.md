@@ -16,7 +16,7 @@ team: 8
 
 ## Project Overview
 
-Ever wondered what happens when you throw LLMs, Vision Transformers, and distributed computing at a design team's nightmare? You get a system that went from **6 hours per banner to 1 minute** — and I got to build it! 🚀
+Ever wondered what happens when you throw LLMs, Vision Transformers, and distributed computing at a design team's nightmare? You get a system that went from **6 hours per banner to 1 minute** — and I got to build it.
 
 Gen AI Bannerization is an end-to-end intelligent automation platform that revolutionized how Bajaj Finserv creates marketing banners. We didn't just automate design — we built an AI assembly line with **98% quality accuracy** that produces **9,000+ unique banners daily**.
 
@@ -26,15 +26,15 @@ Picture this: A design team drowning in repetitive banner requests — thousands
 
 ## Key Features
 
-- **🤖 Multi-Agent Design System**: Built an orchestra of specialized AI agents (Strategist, Background Designer, Foreground Designer, Developer) using LangGraph that collaborate to generate banners from simple campaign briefs
+- **Multi-Agent Design System**: Built an orchestra of specialized AI agents (Strategist, Background Designer, Foreground Designer, Developer) using LangGraph that collaborate to generate banners from simple campaign briefs
 
-- **🔍 Vision Transformer QC**: Fine-tuned ViT model achieving 98% accuracy in detecting design defects, brand violations, text overflow, and color compliance issues — with per-banner confidence scoring
+- **Vision Transformer QC**: Fine-tuned ViT model achieving 98% accuracy in detecting design defects, brand violations, text overflow, and color compliance issues — with per-banner confidence scoring
 
-- **⚡ Parallel Processing Engine**: Architected RabbitMQ + Celery distributed system handling 100+ simultaneous generation tasks without breaking a sweat
+- **Parallel Processing Engine**: Architected RabbitMQ + Celery distributed system handling 100+ simultaneous generation tasks without breaking a sweat
 
-- **✂️ U²-Net Image Segmentation**: Custom fine-tuned deep segmentation network for precise background removal with 94%+ accuracy on brand-specific imagery
+- **U²-Net Image Segmentation**: Custom fine-tuned deep segmentation network for precise background removal with 94%+ accuracy on brand-specific imagery
 
-- **🏷️ MetaPrompting Intelligence**: Automatic extraction of high-value metadata for personalized content recommendations
+- **MetaPrompting Intelligence**: Automatic extraction of high-value metadata for personalized content recommendations
 
 ## Technical Deep Dive
 

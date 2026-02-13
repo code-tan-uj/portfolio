@@ -22,9 +22,15 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio — Tanuj Sansare",
+  title: "Tanuj Sansare — AI Engineer",
   description:
-    "Modern portfolio showcasing projects, skills, and experience.",
+    "AI Engineer specializing in LLMs, Vision Transformers, and RAG pipelines. Building production AI systems at scale.",
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({

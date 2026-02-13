@@ -32,15 +32,15 @@ Engineering teams were drowning in release paperwork:
 
 ## Key Features
 
-- **🧠 Intelligent Change Classification**: LLM-powered analysis of PRs, commits, and diffs to automatically categorize changes (Feature, Fix, Breaking Change) and infer semantic version bumps
+- **Intelligent Change Classification**: LLM-powered analysis of PRs, commits, and diffs to automatically categorize changes (Feature, Fix, Breaking Change) and infer semantic version bumps
 
-- **📋 Auto-Generated CHANGELOGs**: No more copy-pasting commit messages — rich, semantically structured release notes generated automatically
+- **Auto-Generated CHANGELOGs**: No more copy-pasting commit messages — rich, semantically structured release notes generated automatically
 
-- **✅ Policy-as-Code Compliance**: Define rules in YAML ("all PRs must link to Jira", "no high CVEs", "coverage can't drop >5%") — enforced automatically, every time
+- **Policy-as-Code Compliance**: Define rules in YAML ("all PRs must link to Jira", "no high CVEs", "coverage can't drop >5%") — enforced automatically, every time
 
-- **🔄 Self-Healing Clarification Loops**: When validation fails, the agent posts comments on PRs, assigns tasks, and waits for resolution — no human in the critical path
+- **Self-Healing Clarification Loops**: When validation fails, the agent posts comments on PRs, assigns tasks, and waits for resolution — no human in the critical path
 
-- **📊 Decision Observability**: Every classification, policy check, and risk assessment is logged and queryable — perfect for audits and incident RCA
+- **Decision Observability**: Every classification, policy check, and risk assessment is logged and queryable — perfect for audits and incident RCA
 
 ## Technical Architecture
 

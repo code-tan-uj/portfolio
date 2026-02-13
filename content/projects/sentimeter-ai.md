@@ -31,7 +31,7 @@ We needed to bridge the gap between unstructured visual data and actionable emot
 
 ## Key Innovations
 
-### 🔍 Three-Stage Pipeline Architecture
+### Three-Stage Pipeline Architecture
 
 **Stage 1: Image Pre-processing & ROI Detection**
 - Bilateral filtering for noise reduction while preserving text edges
@@ -50,7 +50,7 @@ We needed to bridge the gap between unstructured visual data and actionable emot
 - Custom chat-specific preprocessing (emoji → text, slang normalization)
 - Speaker-level sentiment tracking with temporal trajectory analysis
 
-### 📊 Model Performance
+### Model Performance
 
 | Class | Precision | Recall | F1-Score |
 |-------|-----------|--------|----------|
@@ -59,7 +59,7 @@ We needed to bridge the gap between unstructured visual data and actionable emot
 | Negative | 0.918 | 0.950 | 0.934 |
 | **Overall** | - | - | **0.923** |
 
-### 🔒 Privacy-First PII Redaction
+### Privacy-First PII Redaction
 
 Built hybrid NER + rule-based PII detection achieving **95.5% F1-score**:
 - Named entity recognition for PERSON, PHONE, EMAIL, ADDRESS

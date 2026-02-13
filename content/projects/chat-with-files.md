@@ -32,15 +32,15 @@ The solution? Make documents **conversational**.
 
 ## Key Features
 
-- **📄 Multi-Format Ingestion**: PDF, CSV, DOCX support with intelligent text extraction and structure preservation
+- **Multi-Format Ingestion**: PDF, CSV, DOCX support with intelligent text extraction and structure preservation
 
-- **🧠 Semantic Chunking**: 500-1000 token segments with overlap, balancing context richness and retrieval granularity
+- **Semantic Chunking**: 500-1000 token segments with overlap, balancing context richness and retrieval granularity
 
-- **⚡ FAISS Vector Search**: Sub-second similarity matching across document collections using Cohere embeddings
+- **FAISS Vector Search**: Sub-second similarity matching across document collections using Cohere embeddings
 
-- **💬 Conversational Memory**: Multi-turn interactions with LangChain's ConversationalRetrievalChain maintaining context across questions
+- **Conversational Memory**: Multi-turn interactions with LangChain's ConversationalRetrievalChain maintaining context across questions
 
-- **📎 Source Attribution**: Every answer links back to specific document passages — perfect for compliance and verification
+- **Source Attribution**: Every answer links back to specific document passages — perfect for compliance and verification
 
 ## Technical Architecture
 

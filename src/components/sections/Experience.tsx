@@ -154,7 +154,7 @@ function FilterTabs({
           <motion.button
             key={f.key}
             onClick={() => onChange(f.key)}
-            className="flex-shrink-0 rounded-xl cursor-pointer"
+            className="shrink-0 rounded-xl cursor-pointer"
             style={{
               padding: "var(--space-2) var(--space-5)",
               fontFamily: "var(--font-primary)",
@@ -443,7 +443,13 @@ export default function ExperienceSection() {
           />
 
           {/* Entries */}
-          <div className="flex flex-col gap-10">
+          <motion.div 
+            key={activeFilter}
+            className="flex flex-col gap-10"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
             {filtered.map((exp, i) => {
               const isLeft = i % 2 === 0;
               const isCurrent = exp.endDate === "Present";
@@ -451,7 +457,9 @@ export default function ExperienceSection() {
               return (
                 <motion.div
                   key={exp.id}
-                  variants={fadeUp}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, ease: EASE, delay: i * 0.08 }}
                   className="relative"
                 >
                   {/* ── Desktop layout (alternating) ──────────────── */}
@@ -486,7 +494,7 @@ export default function ExperienceSection() {
 
                   {/* ── Mobile layout (all left-aligned) ─────────── */}
                   <div className="flex lg:hidden items-start gap-4">
-                    <div className="flex-shrink-0" style={{ marginLeft: -1 }}>
+                    <div className="shrink-0" style={{ marginLeft: -1 }}>
                       <TimelineNode type={exp.type} isCurrent={isCurrent} />
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
@@ -496,7 +504,7 @@ export default function ExperienceSection() {
                 </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </motion.div>
     </section>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useMemo, useCallback } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
   Atom,
   Globe,
@@ -94,16 +94,6 @@ const fadeUp = {
   visible: { y: 0, opacity: 1, transition: { duration: 0.6, ease: EASE } },
 };
 
-const cardVariants = {
-  hidden: { y: 30, opacity: 0, scale: 0.95 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 0.45, ease: EASE },
-  },
-};
-
 /* ========================================================================== */
 /*  Sub-components                                                             */
 /* ========================================================================== */
@@ -180,7 +170,7 @@ function CategoryTabs({
     >
       <motion.button
         onClick={() => onChange("all")}
-        className="flex-shrink-0 rounded-xl cursor-pointer"
+        className="shrink-0 rounded-xl cursor-pointer"
         style={{
           padding: "var(--space-2) var(--space-5)",
           fontFamily: "var(--font-primary)",
@@ -208,7 +198,7 @@ function CategoryTabs({
           <motion.button
             key={cat.key}
             onClick={() => onChange(cat.key)}
-            className="flex-shrink-0 rounded-xl cursor-pointer"
+            className="shrink-0 rounded-xl cursor-pointer"
             style={{
               padding: "var(--space-2) var(--space-5)",
               fontFamily: "var(--font-primary)",
@@ -270,7 +260,11 @@ function SkillCard({ skill, inView }: { skill: Skill; inView: boolean }) {
 
   return (
     <motion.div
-      variants={cardVariants}
+      layout
+      initial={{ opacity: 0, scale: 0.9, y: 20 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.9, y: -10 }}
+      transition={{ duration: 0.3, ease: EASE }}
       className="flex flex-col items-center gap-3 rounded-2xl"
       style={{
         padding: "var(--space-6) var(--space-4)",
@@ -398,9 +392,11 @@ export default function Skills() {
             gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 180px), 1fr))",
           }}
         >
-          {filtered.map((skill) => (
-            <SkillCard key={skill.id} skill={skill} inView={inView} />
-          ))}
+          <AnimatePresence mode="popLayout">
+            {filtered.map((skill) => (
+              <SkillCard key={skill.id} skill={skill} inView={inView} />
+            ))}
+          </AnimatePresence>
         </motion.div>
       </motion.div>
     </section>

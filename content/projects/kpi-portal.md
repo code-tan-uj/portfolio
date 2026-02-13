@@ -18,7 +18,7 @@ team: 6
 
 How do you give executives a single-pane-of-glass view into millions of data points while keeping AI agents properly sandboxed? At Bajaj Finserv, I built the **KPI Portal** — a real-time analytics dashboard that consolidates performance metrics across the entire asset portfolio with **sub-second query response** for **2M+ concurrent users**.
 
-The twist? We needed to expose just enough data to AI agents for insight generation while keeping PII locked down tight. 🔐
+The twist? We needed to expose just enough data to AI agents for insight generation while keeping PII locked down tight.
 
 ## The Challenge
 
@@ -32,20 +32,20 @@ Executives needed insights *now*, not after 3 days of data team wrangling. And t
 
 ## Key Features
 
-### 📊 Dashboard Capabilities
+### Dashboard Capabilities
 - **Multi-metric aggregation**: DAU, Sessions, MAU, Bounce Rate — all in one view
 - **Real-time computation**: Auto-refresh with WebSocket-powered live updates
 - **Dimensional filtering**: Slice by product category, page type, traffic source, campaign
 - **Time-series analysis**: 7-day, week-wise, month-wise, business-hours trends
 - **Comparative analysis**: D18 vs D17 granularity for trend detection
 
-### 🤖 AI Integration (The Interesting Part)
+### AI Integration (The Interesting Part)
 - **Scoped Data Access**: AI agents see only aggregated metrics — never raw PII
 - **Automated Alerting**: Threshold-based alerts with executive notification
 - **Anomaly Detection**: ML-powered insight derivation with recommended actions
 - **Complete Audit Trail**: Every AI interaction logged for compliance
 
-### ⚡ Performance at Scale
+### Performance at Scale
 - Sub-second query response through optimized data structures
 - 2M+ concurrent users with millisecond latency
 - WebSocket real-time updates without polling overhead
