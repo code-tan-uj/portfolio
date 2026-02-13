@@ -171,7 +171,7 @@ export default function GlassNavbar() {
               height: "72px",
             }}
           >
-            {/* ── Logo ──────────────────────────────────────────────── */}
+            {/* ── Logo (minimal) ──────────────────────────────────────────────── */}
             <motion.a
               href="#home"
               onClick={(e) => { e.preventDefault(); scrollTo("#home"); }}
@@ -193,16 +193,6 @@ export default function GlassNavbar() {
               >
                 <Code2 size={20} color="#fff" strokeWidth={2.5} />
               </div>
-              <span
-                className="font-bold"
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "var(--text-xl)",
-                  color: "var(--color-text-primary)",
-                }}
-              >
-                Tanuj<span style={{ color: "var(--color-primary)" }}>.</span>
-              </span>
             </motion.a>
 
             {/* ── Desktop links ─────────────────────────────────────── */}

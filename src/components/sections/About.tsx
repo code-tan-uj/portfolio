@@ -203,12 +203,12 @@ function ProfileImage() {
         }}
       >
         <Image
-          src="/profile-placeholder.svg"
-          alt="Profile photo"
+          src="/profile/git-hub-profile-Picsart-BackgroundChanger.png"
+          alt="Tanuj Sansare - AI Engineer"
           fill
           className="object-cover"
           sizes="320px"
-          priority={false}
+          priority
         />
       </div>
     </motion.div>
