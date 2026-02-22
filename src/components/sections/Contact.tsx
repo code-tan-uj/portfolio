@@ -69,13 +69,13 @@ const staggerItem = {
 /*  Contact info data                                                          */
 /* ========================================================================== */
 
-const CONTACT_EMAIL = "tanuj.sansare2000@gmail.com";
+const CONTACT_EMAIL = "info@tanujsansare.cv";
 const CONTACT_LOCATION = "Pune, India";
 
 const SOCIALS = [
   { label: "GitHub", href: "https://github.com/code-tan-uj", icon: Github },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/tps2000", icon: Linkedin },
-  { label: "Twitter", href: "https://twitter.com", icon: Twitter },
+  { label: "Twitter", href: "https://x.com/Tanuj0181", icon: Twitter },
   { label: "Email", href: `mailto:${CONTACT_EMAIL}`, icon: Mail },
 ];
 

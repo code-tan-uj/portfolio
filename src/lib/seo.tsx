@@ -15,11 +15,11 @@ import type { Metadata } from 'next';
 
 export const siteConfig = {
   name: 'Portfolio',
-  title: 'Full-Stack Developer Portfolio',
+  title: 'Full-Stack AI Engineer Portfolio',
   description: 'A modern portfolio showcasing web development projects and skills.',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://yoursite.com',
   ogImage: '/og-image.png',
-  creator: 'Your Name',
+  creator: 'Tanuj Sansare',
   keywords: [
     'web developer',
     'full-stack developer',
@@ -28,13 +28,20 @@ export const siteConfig = {
     'portfolio',
     'frontend developer',
     'backend developer',
+    'AI Engineer',
+    'ML engineer',
+    'Generative AI Specialist',
+    'Machine Learning Engineer',
+    'Python Developer',
+    'Data Scientist',
   ],
   links: {
-    github: 'https://github.com/yourusername',
-    linkedin: 'https://linkedin.com/in/yourusername',
-    twitter: 'https://twitter.com/yourusername',
+    github: "https://github.com/code-tan-uj",
+    linkedin: "https://www.linkedin.com/in/tps2000",
+    twitter: "https://x.com/Tanuj0181",
   },
 };
+
 
 // ============================================
 // Metadata Generator
@@ -99,7 +106,7 @@ export function generateMetadata({
       title: pageTitle,
       description: pageDescription,
       images: [pageImage],
-      creator: '@yourusername',
+      creator: '@Tanuj0181',
     },
     
     // Canonical

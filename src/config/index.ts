@@ -16,10 +16,11 @@ export const config = {
     url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
     author: {
       name: "Tanuj Sansare",
-      email: "tanuj.sansare2000@gmail.com",
-      twitter: "@tanujsansare",
+      email: "info@tanujsansare.cv",
+      twitter: "@Tanuj0181",
     },
   },
+
 
   // =========================================
   // Sentry Error Monitoring

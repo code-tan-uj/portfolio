@@ -26,12 +26,12 @@ const SOCIALS: SocialLink[] = [
   },
   {
     label: "Twitter",
-    href: "https://twitter.com/tanujsansare",
+    href: "https://x.com/Tanuj0181",
     icon: <Twitter size={20} />,
   },
   {
     label: "Email",
-    href: "mailto:tanuj.sansare2000@gmail.com",
+    href: "mailto:info@tanujsansare.cv",
     icon: <Mail size={20} />,
   },
 ];

@@ -33,8 +33,8 @@ interface SocialLink {
 const SOCIALS: SocialLink[] = [
   { label: "GitHub", href: "https://github.com/code-tan-uj", icon: <Github size={20} /> },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/tps2000", icon: <Linkedin size={20} /> },
-  { label: "Twitter", href: "https://twitter.com", icon: <Twitter size={20} /> },
-  { label: "Email", href: "mailto:tanuj.sansare2000@gmail.com", icon: <Mail size={20} /> },
+  { label: "Twitter", href: "https://x.com/Tanuj0181", icon: <Twitter size={20} /> },
+  { label: "Email", href: "mailto:info@tanujsansare.cv", icon: <Mail size={20} /> },
 ];
 
 /* -------------------------------------------------------------------------- */
@@ -456,7 +456,7 @@ export default function Hero() {
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.6 }}
         >
-          <span
+          {/* <span
             style={{
               fontFamily: "var(--font-mono)",
               fontSize: "var(--text-xs)",
@@ -470,7 +470,7 @@ export default function Hero() {
             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
           >
             <ArrowDown size={16} />
-          </motion.div>
+          </motion.div> */}
         </motion.div>
       </motion.div>
     </section>

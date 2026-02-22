@@ -22,13 +22,13 @@ bio: |
   When I'm not teaching machines to be smarter, you'll find me exploring the latest in generative AI, contributing to AI open source projects, or explaining to non-tech friends why ChatGPT isn't coming for their jobs (yet).
 
   **Currently:** Full-Time AI Engineer at Bajaj Finserv | **Previously:** Samsung PRISM Research, American Axle Manufacturing
-email: "tanuj.sansare2000@gmail.com"
+email: "info@tanujsansare.cv"
 phone: "+91-XXXXXXXXXX"
 location: "Pune, India"
 social:
   github: "https://github.com/code-tan-uj"
   linkedin: "https://www.linkedin.com/in/tps2000"
-  twitter: "https://twitter.com"
+  twitter: "https://x.com/Tanuj0181"
 availability: true
 resumeUrl: "/resume.pdf"
 ---
