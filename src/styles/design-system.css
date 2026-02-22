@@ -41,11 +41,18 @@
   --color-info: #3B82F6;
 
   /* Glass */
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-bg-heavy: rgba(255, 255, 255, 0.85);
-  --glass-border: rgba(255, 255, 255, 0.3);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  --glass-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.12);
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-bg-heavy: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-shadow: 0 10px 40px rgba(2, 6, 23, 0.12);
+  --glass-shadow-lg: 0 20px 60px rgba(2, 6, 23, 0.16);
+  /* Surface tokens that mirror the navbar scrolled look */
+  --glass-surface-bg: rgba(255,255,255,0.06);
+  --glass-backdrop: saturate(140%) blur(14px);
+  --glass-backdrop-lg: saturate(140%) blur(18px);
+  --glass-border-color: rgba(255,255,255,0.08);
+  --glass-box-shadow: 0 8px 30px rgba(12,18,30,0.35), inset 0 1px 0 rgba(255,255,255,0.03);
+  --glass-box-shadow-lg: 0 12px 48px rgba(12,18,30,0.45), inset 0 1px 0 rgba(255,255,255,0.03);
 
   /* Gradient */
   --gradient-primary: linear-gradient(135deg, #6366F1, #8B5CF6);
@@ -53,7 +60,7 @@
   --gradient-hero: linear-gradient(135deg, #EEF2FF 0%, #F5F3FF 50%, #FDF2F8 100%);
   --gradient-mesh: radial-gradient(at 40% 20%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
                    radial-gradient(at 80% 0%, rgba(139, 92, 246, 0.06) 0px, transparent 50%),
-                   radial-gradient(at 0% 50%, rgba(236, 72, 153, 0.06) 0px, transparent 50%);
+                   radial-gradient(at 0% 50%, rgba(236, 72, 153, 0.12) 0px, transparent 50%);
 }
 
 [data-theme="dark"] {
@@ -88,11 +95,19 @@
   --color-info: #60A5FA;
 
   /* Glass */
-  --glass-bg: rgba(15, 23, 42, 0.7);
-  --glass-bg-heavy: rgba(15, 23, 42, 0.85);
-  --glass-border: rgba(51, 65, 85, 0.5);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  --glass-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.4);
+  /* Use subtle translucent white overlays in dark mode to mimic navbar glass */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-bg-heavy: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 14px 48px rgba(2, 6, 23, 0.6);
+  --glass-shadow-lg: 0 28px 80px rgba(2, 6, 23, 0.75);
+  /* Dark theme surface tokens — match navbar scrolled styling for consistency */
+  --glass-surface-bg: rgba(255,255,255,0.06);
+  --glass-backdrop: saturate(160%) blur(16px);
+  --glass-backdrop-lg: saturate(170%) blur(24px);
+  --glass-border-color: rgba(255,255,255,0.06);
+  --glass-box-shadow: 0 14px 48px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+  --glass-box-shadow-lg: 0 28px 80px rgba(2,6,23,0.75), inset 0 1px 0 rgba(255,255,255,0.02);
 
   /* Gradient */
   --gradient-primary: linear-gradient(135deg, #818CF8, #A78BFA);
@@ -100,7 +115,46 @@
   --gradient-hero: linear-gradient(135deg, #0F172A 0%, #1E1B4B 50%, #1E293B 100%);
   --gradient-mesh: radial-gradient(at 40% 20%, rgba(129, 140, 248, 0.1) 0px, transparent 50%),
                    radial-gradient(at 80% 0%, rgba(167, 139, 250, 0.08) 0px, transparent 50%),
-                   radial-gradient(at 0% 50%, rgba(244, 114, 182, 0.08) 0px, transparent 50%);
+                   radial-gradient(at 0% 50%, rgba(244, 114, 182, 0.16) 0px, transparent 50%);
+}
+
+/* Stronger glass appearance specifically for dark theme UI elements */
+[data-theme="dark"] .glass {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  backdrop-filter: saturate(160%) blur(calc(var(--glass-blur) + 8px));
+  -webkit-backdrop-filter: saturate(160%) blur(calc(var(--glass-blur) + 8px));
+  border: var(--glass-border-width) solid var(--glass-border);
+  box-shadow: var(--glass-shadow-lg);
+  background-image: var(--gradient-mesh), linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  background-blend-mode: overlay;
+  position: relative;
+  overflow: visible;
+}
+
+[data-theme="dark"] .glass::after {
+  /* subtle glossy highlight */
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  width: 40%;
+  height: 26%;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.01));
+  transform: skewX(-8deg);
+  filter: blur(8px);
+  border-radius: 8px;
+  mix-blend-mode: overlay;
+}
+
+[data-theme="dark"] .glass-heavy {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+  backdrop-filter: saturate(170%) blur(calc(var(--glass-blur-lg) + 8px));
+  -webkit-backdrop-filter: saturate(170%) blur(calc(var(--glass-blur-lg) + 8px));
+  border: var(--glass-border-width) solid var(--glass-border);
+  box-shadow: var(--glass-shadow-lg);
+  background-image: var(--gradient-mesh), linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+  background-blend-mode: overlay;
 }
 
 
@@ -214,9 +268,14 @@
    -------------------------------------------------------------------------- */
 
 :root {
-  --glass-blur: 12px;
-  --glass-blur-lg: 24px;
+  --glass-blur: 16px;
+  --glass-blur-lg: 32px;
   --glass-border-width: 1px;
+
+  /* Glass accent colors (used for subtle colored reflections) */
+  --glass-accent-1: rgba(255, 90, 150, 0.06);
+  --glass-accent-2: rgba(0, 180, 255, 0.06);
+  --glass-accent-3: rgba(255, 200, 80, 0.04);
 }
 
 
@@ -248,19 +307,41 @@
 
 /* Glass panels */
 .glass {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: var(--glass-border-width) solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
+  /* Mirror navbar surface */
+  background: var(--glass-surface-bg);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+  border: var(--glass-border-width) solid var(--glass-border-color);
+  box-shadow: var(--glass-box-shadow);
+  /* keep mesh overlay for color refractions */
+  background-image: var(--gradient-mesh), linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  background-blend-mode: overlay;
 }
 
 .glass-heavy {
-  background: var(--glass-bg-heavy);
-  backdrop-filter: blur(var(--glass-blur-lg));
-  -webkit-backdrop-filter: blur(var(--glass-blur-lg));
-  border: var(--glass-border-width) solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
+  background: var(--glass-surface-bg);
+  backdrop-filter: var(--glass-backdrop-lg);
+  -webkit-backdrop-filter: var(--glass-backdrop-lg);
+  border: var(--glass-border-width) solid var(--glass-border-color);
+  box-shadow: var(--glass-box-shadow-lg);
+  background-image: var(--gradient-mesh), linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  background-blend-mode: overlay;
+}
+
+/* utility class to add colorful halo behind cards for stronger glass highlight */
+.glass-halo {
+  position: relative;
+}
+.glass-halo::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  z-index: -1;
+  border-radius: inherit;
+  background-image: radial-gradient(closest-side, var(--glass-accent-1), transparent), radial-gradient(closest-side, var(--glass-accent-2), transparent), radial-gradient(closest-side, var(--glass-accent-3), transparent);
+  filter: blur(32px) saturate(120%);
+  opacity: 0.9;
+  pointer-events: none;
 }
 
 /* Gradient text */

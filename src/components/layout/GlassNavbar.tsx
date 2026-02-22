@@ -10,6 +10,7 @@ import {
   Code2,
 } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
+import { usePathname, useRouter } from 'next/navigation';
 
 /* -------------------------------------------------------------------------- */
 /*  Types                                                                      */
@@ -21,12 +22,12 @@ interface NavLink {
 }
 
 const NAV_LINKS: NavLink[] = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Experience", href: "#experience" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Projects", href: "/projects" },
+  { label: "Blog", href: "/blog" },
+  { label: "Research", href: "/research" },
+  { label: "Contact", href: "/contact" },
 ];
 
 /* -------------------------------------------------------------------------- */
@@ -88,7 +89,10 @@ export default function GlassNavbar() {
   const { theme, toggleTheme, mounted } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<string>("#home");
+  const pathname = usePathname();
+  const router = useRouter();
+  // derive activeSection from pathname to avoid extra state
+  const activeSection = pathname || "/";
 
   /* ---- scroll listener --------------------------------------------------- */
   useEffect(() => {
@@ -98,26 +102,8 @@ export default function GlassNavbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* ---- intersection observer for active section -------------------------- */
-  useEffect(() => {
-    const sectionIds = NAV_LINKS.map((l) => l.href.slice(1));
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setActiveSection(`#${entry.target.id}`);
-          }
-        }
-      },
-      { rootMargin: "-40% 0px -55% 0px" },
-    );
-
-    for (const id of sectionIds) {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    }
-    return () => observer.disconnect();
-  }, []);
+  /* ---- track pathname to set active nav link ----------------------------- */
+  
 
   /* ---- lock body scroll when mobile menu open ---------------------------- */
   useEffect(() => {
@@ -125,17 +111,14 @@ export default function GlassNavbar() {
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
-  /* ---- smooth-scroll handler --------------------------------------------- */
-  const scrollTo = useCallback(
+  /* ---- navigation handler ----------------------------------------------- */
+  const navigateTo = useCallback(
     (href: string) => {
       setMobileOpen(false);
-      const id = href.slice(1);
-      const el = document.getElementById(id);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-      }
+      // Use router for client-side navigation
+      router.push(href);
     },
-    [],
+    [router],
   );
 
   return (
@@ -145,36 +128,66 @@ export default function GlassNavbar() {
         initial="hidden"
         animate="visible"
         className="fixed top-0 left-0 right-0"
-        style={{ zIndex: 50 }}
+        style={{ zIndex: 50, pointerEvents: 'auto' }}
       >
+        {/* Centered, detached glass container */}
         <div
           className="transition-all"
           style={{
-            backdropFilter: scrolled ? "blur(12px)" : "blur(0px)",
-            WebkitBackdropFilter: scrolled ? "blur(12px)" : "blur(0px)",
-            backgroundColor: scrolled
-              ? "var(--glass-bg)"
-              : "transparent",
-            borderBottom: scrolled
-              ? "1px solid var(--glass-border)"
-              : "1px solid transparent",
-            boxShadow: scrolled ? "var(--glass-shadow)" : "none",
-            transitionProperty: "background-color, border-color, box-shadow, backdrop-filter",
-            transitionDuration: "var(--duration-slow)",
-            transitionTimingFunction: "var(--ease-smooth)",
+            // sizing & placement
+            width: 'min(var(--container-2xl), calc(100% - 48px))',
+            margin: '12px auto',
+            borderRadius: 'var(--radius-xl)',
+            padding: 4,
+            position: 'relative',
+            // glass effect (more pronounced when scrolled)
+            backgroundColor: scrolled ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.02)',
+            backdropFilter: scrolled ? 'saturate(140%) blur(14px)' : 'saturate(120%) blur(8px)',
+            WebkitBackdropFilter: scrolled ? 'saturate(140%) blur(14px)' : 'saturate(120%) blur(8px)',
+            border: scrolled ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(255,255,255,0.04)',
+            boxShadow: scrolled
+              ? '0 8px 30px rgba(12,18,30,0.35), inset 0 1px 0 rgba(255,255,255,0.03)'
+              : '0 6px 20px rgba(8,12,20,0.18)',
+            transitionProperty: 'background-color, border-color, box-shadow, backdrop-filter',
+            transitionDuration: 'var(--duration-slow)',
+            transitionTimingFunction: 'var(--ease-smooth)',
           }}
         >
+          {/* colorful blurred accent behind the glass to highlight 'glassness' */}
+          <div
+            aria-hidden
+            style={{
+              position: 'absolute',
+              inset: 0,
+              borderRadius: 12,
+              pointerEvents: 'none',
+              mixBlendMode: 'screen',
+              opacity: scrolled ? 0.55 : 0.35,
+              backgroundImage:
+                'radial-gradient(400px 120px at 10% 20%, rgba(255,90,150,0.12), transparent),\
+                 radial-gradient(300px 100px at 85% 40%, rgba(0,180,255,0.10), transparent),\
+                 linear-gradient(135deg, rgba(255,200,80,0.03), rgba(120,80,255,0.02))',
+              filter: 'blur(28px) contrast(1.05)',
+              WebkitFilter: 'blur(28px) contrast(1.05)',
+              transform: 'translateZ(0)',
+              transition: 'opacity var(--duration-slow) var(--ease-smooth)',
+              zIndex: 0,
+            }}
+          />
+
           <nav
             className="mx-auto flex items-center justify-between px-6"
             style={{
-              maxWidth: "var(--container-xl)",
-              height: "72px",
+              maxWidth: 'var(--container-2xl)',
+              height: '60px',
+              position: 'relative',
+              zIndex: 1,
             }}
           >
             {/* ── Logo (minimal) ──────────────────────────────────────────────── */}
             <motion.a
-              href="#home"
-              onClick={(e) => { e.preventDefault(); scrollTo("#home"); }}
+              href="/"
+              onClick={(e) => { e.preventDefault(); navigateTo('/'); }}
               variants={logoVariants}
               initial="hidden"
               animate="visible"
@@ -198,7 +211,7 @@ export default function GlassNavbar() {
             {/* ── Desktop links ─────────────────────────────────────── */}
             <ul
               className="hidden md:flex items-center gap-1"
-              style={{ listStyle: "none", margin: 0, padding: 0 }}
+              style={{ listStyle: "none", margin: 0, padding: 0, height: '60px', alignItems: 'center' }}
             >
               {NAV_LINKS.map((link, i) => (
                 <motion.li
@@ -210,7 +223,7 @@ export default function GlassNavbar() {
                 >
                   <a
                     href={link.href}
-                    onClick={(e) => { e.preventDefault(); scrollTo(link.href); }}
+                    onClick={(e) => { e.preventDefault(); navigateTo(link.href); }}
                     className="relative block px-3 py-2 rounded-lg"
                     style={{
                       fontFamily: "var(--font-primary)",
@@ -260,14 +273,14 @@ export default function GlassNavbar() {
             {/* ── Right actions ─────────────────────────────────────── */}
             <div className="flex items-center gap-2">
               {/* Theme toggle */}
-              <motion.button
+        <motion.button
                 aria-label="Toggle theme"
                 title="Toggle theme"
                 onClick={toggleTheme}
                 className="relative flex items-center justify-center rounded-xl cursor-pointer"
                 style={{
-                  width: 40,
-                  height: 40,
+          width: 36,
+          height: 36,
                   background: "transparent",
                   border: "1px solid var(--color-border)",
                   color: "var(--color-text-primary)",
@@ -306,8 +319,8 @@ export default function GlassNavbar() {
                 onClick={() => setMobileOpen((o) => !o)}
                 className="flex md:hidden items-center justify-center rounded-xl cursor-pointer"
                 style={{
-                  width: 40,
-                  height: 40,
+                  width: 36,
+                  height: 36,
                   background: "transparent",
                   border: "1px solid var(--color-border)",
                   color: "var(--color-text-primary)",
@@ -371,19 +384,19 @@ export default function GlassNavbar() {
                 backdropFilter: "blur(24px)",
                 WebkitBackdropFilter: "blur(24px)",
                 borderLeft: "1px solid var(--glass-border)",
-                paddingTop: 80,
+                paddingTop: 68,
               }}
             >
               <nav className="flex flex-col gap-1 px-6">
                 {NAV_LINKS.map((link, i) => (
-                  <motion.a
-                    key={link.href}
-                    href={link.href}
-                    custom={i}
-                    variants={mobileLinkVariants}
-                    initial="closed"
-                    animate="open"
-                    onClick={(e) => { e.preventDefault(); scrollTo(link.href); }}
+          <motion.a
+            key={link.href}
+            href={link.href}
+            custom={i}
+            variants={mobileLinkVariants}
+            initial="closed"
+            animate="open"
+            onClick={(e) => { e.preventDefault(); navigateTo(link.href); }}
                     className="block rounded-xl px-4 py-3"
                     style={{
                       fontFamily: "var(--font-primary)",

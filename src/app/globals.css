@@ -28,7 +28,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px; /* offset for fixed navbar (72px + breathing room) */
+  scroll-padding-top: 72px; /* offset for fixed navbar (60px + breathing room) */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -44,6 +44,71 @@ body {
   transition: background-color var(--duration-slow) var(--ease-smooth),
               color var(--duration-slow) var(--ease-smooth);
 }
+
+/* Persistent background lighting to be blurred under glass panels. */
+.page-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background-color: transparent;
+}
+
+.page-bg::before {
+  content: '';
+  position: absolute;
+  left: 6%;
+  top: 6%;
+  width: 980px;
+  height: 540px;
+  border-radius: 46%;
+  /* softened pink core + larger spread; intentionally larger than cyan */
+  background: radial-gradient(closest-side, rgba(236,72,153,0.68) 0%, rgba(236,72,153,0.48) 18%, rgba(236,72,153,0.34) 40%, transparent 64%),
+              radial-gradient(circle at 15% 20%, rgba(255,255,255,0.08), transparent 36%);
+  width: 1300px;
+  height: 820px;
+  filter: blur(100px) saturate(200%);
+  transform: rotate(-8deg) scale(1.06) translate3d(0,0,0);
+}
+
+.page-bg::after {
+  content: '';
+  position: absolute;
+  right: 4%;
+  bottom: 4%;
+  width: 760px;
+  height: 460px;
+  border-radius: 46%;
+  /* softened cyan core + smaller, tighter spread; intentionally smaller than pink */
+  background: radial-gradient(closest-side, rgba(0,180,255,0.68) 0%, rgba(0,180,255,0.48) 18%, rgba(0,180,255,0.34) 40%, transparent 64%),
+              radial-gradient(circle at 85% 80%, rgba(255,255,255,0.06), transparent 36%);
+  width: 920px;
+  height: 620px;
+  filter: blur(86px) saturate(195%);
+  transform: rotate(8deg) scale(0.94) translate3d(0,0,0);
+}
+
+/* On larger screens push the lights farther toward the edges and increase their spread */
+@media (min-width: 1200px) {
+  .page-bg::before {
+  left: -18%; /* push further left and up for diagonal */
+  top: -18%;
+  width: 1600px; /* larger pink */
+  height: 920px;
+  filter: blur(150px) saturate(210%);
+  transform: rotate(-12deg) scale(1.08) translate3d(0,0,0);
+  }
+
+  .page-bg::after {
+  right: -22%; /* push further right and down for diagonal */
+  bottom: -24%;
+  width: 1260px; /* slightly smaller cyan */
+  height: 760px;
+  filter: blur(130px) saturate(200%);
+  transform: rotate(12deg) scale(0.98) translate3d(0,0,0);
+  }
+}
+
 
 /* --------------------------------------------------------------------------
    Selection

@@ -43,7 +43,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased`}
       >
-        <ThemeProvider>{children}</ThemeProvider>
+  {/* Page background lighting that will be blurred under glass panels */}
+  <div className="page-bg" aria-hidden />
+  <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
