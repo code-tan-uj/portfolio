@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useMemo, useCallback } from "react";
+import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import {
   Briefcase,
@@ -12,7 +12,6 @@ import {
 import Badge from "@/components/ui/Badge";
 import {
   experiences,
-  EXPERIENCE_FILTERS,
   type Experience,
   type ExperienceType,
 } from "@/data/experience";
@@ -125,59 +124,6 @@ function SectionHeader() {
         animate={inView ? { width: 64, opacity: 1 } : { width: 0, opacity: 0 }}
         transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
       />
-    </motion.div>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-
-function FilterTabs({
-  active,
-  onChange,
-}: {
-  active: string;
-  onChange: (key: string) => void;
-}) {
-  return (
-    <motion.div
-      variants={fadeUp}
-      className="flex items-center gap-2 overflow-x-auto pb-2 justify-center"
-      style={{
-        marginBottom: "var(--space-12)",
-        scrollbarWidth: "none",
-        msOverflowStyle: "none",
-      }}
-    >
-      {EXPERIENCE_FILTERS.map((f) => {
-        const isActive = active === f.key;
-        return (
-          <motion.button
-            key={f.key}
-            onClick={() => onChange(f.key)}
-            className="shrink-0 rounded-xl cursor-pointer"
-            style={{
-              padding: "var(--space-2) var(--space-5)",
-              fontFamily: "var(--font-primary)",
-              fontSize: "var(--text-sm)",
-              fontWeight: 600,
-              border: "1px solid",
-              borderColor: isActive ? "var(--color-primary)" : "var(--color-border)",
-              background: isActive ? "var(--color-primary)" : "transparent",
-              color: isActive ? "#fff" : "var(--color-text-secondary)",
-              transition: "all var(--duration-base) var(--ease-smooth)",
-              whiteSpace: "nowrap",
-            }}
-            whileHover={
-              isActive
-                ? undefined
-                : { borderColor: "var(--color-primary)", color: "var(--color-primary)" }
-            }
-            whileTap={{ scale: 0.96 }}
-          >
-            {f.label}
-          </motion.button>
-        );
-      })}
     </motion.div>
   );
 }
@@ -379,19 +325,6 @@ function TimelineCard({
 export default function ExperienceSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const inView = useInView(sectionRef, { once: true, amount: 0.05 });
-  const [activeFilter, setActiveFilter] = useState<string>("all");
-
-  const filtered = useMemo(
-    () =>
-      activeFilter === "all"
-        ? experiences
-        : experiences.filter((e) => e.type === activeFilter),
-    [activeFilter],
-  );
-
-  const handleFilterChange = useCallback((key: string) => {
-    setActiveFilter(key);
-  }, []);
 
   return (
     <section
@@ -408,7 +341,6 @@ export default function ExperienceSection() {
         style={{ maxWidth: 1200 }}
       >
         <SectionHeader />
-        <FilterTabs active={activeFilter} onChange={handleFilterChange} />
 
         {/* ── Timeline ─────────────────────────────────────────── */}
         <div className="relative">
@@ -443,23 +375,15 @@ export default function ExperienceSection() {
           />
 
           {/* Entries */}
-          <motion.div 
-            key={activeFilter}
-            className="flex flex-col gap-10"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-          >
-            {filtered.map((exp, i) => {
+          <div className="flex flex-col gap-10">
+            {experiences.map((exp, i) => {
               const isLeft = i % 2 === 0;
               const isCurrent = exp.endDate === "Present";
 
               return (
                 <motion.div
                   key={exp.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, ease: EASE, delay: i * 0.08 }}
+                  variants={fadeUp}
                   className="relative"
                 >
                   {/* ── Desktop layout (alternating) ──────────────── */}
@@ -504,7 +428,7 @@ export default function ExperienceSection() {
                 </motion.div>
               );
             })}
-          </motion.div>
+          </div>
         </div>
       </motion.div>
     </section>

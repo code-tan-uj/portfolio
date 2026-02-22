@@ -43,8 +43,8 @@ interface Stat {
 /* ========================================================================== */
 
 const STATS: Stat[] = [
-  { label: "Years Experience", value: 4, suffix: "+", icon: <Briefcase size={20} /> },
-  { label: "Projects Completed", value: 30, suffix: "+", icon: <FolderGit2 size={20} /> },
+  { label: "Years Experience", value: 3, suffix: "+", icon: <Briefcase size={20} /> },
+  { label: "Projects Completed", value: 18, suffix: "+", icon: <FolderGit2 size={20} /> },
   { label: "Technologies", value: 20, suffix: "+", icon: <Cpu size={20} /> },
   { label: "Coffee Consumed", value: 3, suffix: "k cups", icon: <Coffee size={20} /> },
 ];

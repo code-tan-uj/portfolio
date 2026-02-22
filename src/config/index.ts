@@ -16,7 +16,7 @@ export const config = {
     url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
     author: {
       name: "Tanuj Sansare",
-      email: "tanujsansare@gmail.com",
+      email: "tanuj.sansare2000@gmail.com",
       twitter: "@tanujsansare",
     },
   },

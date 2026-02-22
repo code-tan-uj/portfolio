@@ -1,5 +1,5 @@
 ---
-title: "Sentimeter AI — Chat Screenshot Intelligence"
+title: "Chat Screenshot Intelligence"
 slug: "sentimeter-ai"
 description: "Research initiative at Samsung transforming chat screenshots into actionable sentiment intelligence using OCR, speaker diarization, and fine-tuned RoBERTa transformers."
 category: "research"

@@ -53,10 +53,10 @@ export async function getPortfolio(): Promise<Portfolio> {
     title: 'AI Engineer',
     tagline: 'Building AI systems that ship to millions',
     bio: "I'm an AI Engineer specializing in LLMs, Vision Transformers, and RAG pipelines. At Bajaj Finserv, I've built systems generating 9,000+ personalized banners daily and AI agents automating enterprise workflows. I turn cutting-edge research into production-ready ML systems.",
-    email: 'tanujsansare@gmail.com',
+    email: 'tanuj.sansare2000@gmail.com',
     github: 'https://github.com/code-tan-uj',
-    linkedin: 'https://linkedin.com/in/tanuj-sansare',
-    twitter: 'https://twitter.com/tanujsansare',
+    linkedin: 'https://www.linkedin.com/in/tps2000',
+    twitter: 'https://x.com/Tanuj0181',
   };
 }
 

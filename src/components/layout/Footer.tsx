@@ -21,7 +21,7 @@ const SOCIALS: SocialLink[] = [
   },
   {
     label: "LinkedIn",
-    href: "https://linkedin.com/in/tanuj-sansare",
+    href: "https://www.linkedin.com/in/tps2000",
     icon: <Linkedin size={20} />,
   },
   {
@@ -31,7 +31,7 @@ const SOCIALS: SocialLink[] = [
   },
   {
     label: "Email",
-    href: "mailto:tanujsansare@gmail.com",
+    href: "mailto:tanuj.sansare2000@gmail.com",
     icon: <Mail size={20} />,
   },
 ];

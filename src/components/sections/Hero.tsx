@@ -32,9 +32,9 @@ interface SocialLink {
 
 const SOCIALS: SocialLink[] = [
   { label: "GitHub", href: "https://github.com/code-tan-uj", icon: <Github size={20} /> },
-  { label: "LinkedIn", href: "https://linkedin.com/in/tanuj-sansare", icon: <Linkedin size={20} /> },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/tps2000", icon: <Linkedin size={20} /> },
   { label: "Twitter", href: "https://twitter.com", icon: <Twitter size={20} /> },
-  { label: "Email", href: "mailto:tanujsansare@gmail.com", icon: <Mail size={20} /> },
+  { label: "Email", href: "mailto:tanuj.sansare2000@gmail.com", icon: <Mail size={20} /> },
 ];
 
 /* -------------------------------------------------------------------------- */

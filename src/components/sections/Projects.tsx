@@ -4,11 +4,7 @@ import { useState, useRef, useMemo, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import {
-  ExternalLink,
-  Github,
-  ChevronDown,
-} from "lucide-react";
+import { ExternalLink, Github, ChevronDown } from "lucide-react";
 import Badge from "@/components/ui/Badge";
 import { ParallaxSection } from "@/components/animations";
 import { GlowEffect } from "@/components/effects";
@@ -89,7 +85,7 @@ const PROJECTS: Project[] = [
     image: "/projects/project-5.svg",
     tags: ["React", "TypeScript", "Node.js", "Redis", "MongoDB"],
     category: "web",
-  }
+  },
 ];
 
 /* ========================================================================== */
@@ -130,8 +126,18 @@ const fadeUp = {
 
 const cardVariants = {
   hidden: { y: 40, opacity: 0, scale: 0.97 },
-  visible: { y: 0, opacity: 1, scale: 1, transition: { duration: 0.5, ease: EASE } },
-  exit: { y: -20, opacity: 0, scale: 0.97, transition: { duration: 0.25, ease: EASE } },
+  visible: {
+    y: 0,
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.5, ease: EASE },
+  },
+  exit: {
+    y: -20,
+    opacity: 0,
+    scale: 0.97,
+    transition: { duration: 0.25, ease: EASE },
+  },
 };
 
 /* ========================================================================== */
@@ -232,11 +238,12 @@ function FilterTabs({
               fontSize: "var(--text-sm)",
               fontWeight: 600,
               border: "1px solid",
-              borderColor: isActive ? "var(--color-primary)" : "var(--color-border)",
+              borderColor: isActive
+                ? "var(--color-primary)"
+                : "var(--color-border)",
               background: isActive ? "var(--color-primary)" : "transparent",
               color: isActive ? "#fff" : "var(--color-text-secondary)",
-              transition:
-                "all var(--duration-base) var(--ease-smooth)",
+              transition: "all var(--duration-base) var(--ease-smooth)",
               whiteSpace: "nowrap",
             }}
             whileHover={
@@ -267,7 +274,7 @@ function ProjectCard({ project }: { project: Project }) {
       initial="hidden"
       animate="visible"
       exit="exit"
-      className="flex flex-col overflow-hidden rounded-2xl group"
+      className="flex flex-col overflow-hidden rounded-2xl group relative"
       style={{
         background: "var(--glass-bg)",
         backdropFilter: "blur(var(--glass-blur))",
@@ -275,33 +282,153 @@ function ProjectCard({ project }: { project: Project }) {
         border: "1px solid var(--glass-border)",
         boxShadow: "var(--glass-shadow)",
         transition:
-          "transform var(--duration-slow) var(--ease-smooth), box-shadow var(--duration-slow) var(--ease-smooth), border-color var(--duration-slow) var(--ease-smooth)",
+          "transform var(--duration-slow) var(--ease-smooth), box-shadow var(--duration-slow) var(--ease-smooth), border-color var(--duration-slow) var(--ease-smooth), background var(--duration-slow) var(--ease-smooth)",
       }}
       whileHover={{
-        y: -8,
-        boxShadow: "var(--glass-shadow-lg)",
-        borderColor: "var(--color-primary)",
+        y: -12,
+        boxShadow:
+          "0 20px 60px rgba(99, 102, 241, 0.25), 0 0 0 1px var(--color-primary)",
+        scale: 1.02,
       }}
     >
-    <GlowEffect size={350} intensity={0.12} blendMode="soft-light">
-      {/* ── Thumbnail ─────────────────────────────────────────── */}
-      <div
-        className="relative overflow-hidden"
-        style={{ aspectRatio: "16/9" }}
-      >
-        <Image
-          src={project.image}
-          alt={project.title}
-          fill
-          className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-        />
-        {/* Hover gradient overlay */}
-        <div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3"
+      <GlowEffect size={400} intensity={0.2} blendMode="soft-light">
+        {/* ── Thumbnail ─────────────────────────────────────────── */}
+        {/* ── Content (Clickable) ──────────────────────────────── */}
+        <Link
+          href={`/projects/${project.slug}`}
+          className="flex flex-col flex-1 no-underline"
           style={{
-            background:
-              "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%)",
+            padding: "var(--space-5) var(--space-5) var(--space-5)",
+            color: "inherit",
+            textDecoration: "none",
+          }}
+        >
+          <div
+            className="relative overflow-hidden"
+            style={{ aspectRatio: "16/9" }}
+          >
+            <Image
+              src={project.image}
+              alt={project.title}
+              fill
+              className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            />
+            {/* Hover gradient overlay */}
+            <div
+              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3"
+              style={{
+                background:
+                  "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%)",
+              }}
+            >
+              {project.liveUrl && (
+                <a
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`View ${project.title} live`}
+                  className="flex items-center justify-center rounded-full"
+                  style={{
+                    width: 44,
+                    height: 44,
+                    background: "rgba(255,255,255,0.15)",
+                    backdropFilter: "blur(8px)",
+                    WebkitBackdropFilter: "blur(8px)",
+                    border: "1px solid rgba(255,255,255,0.25)",
+                    color: "#fff",
+                    transition:
+                      "background var(--duration-fast) var(--ease-smooth)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "var(--color-primary)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "rgba(255,255,255,0.15)";
+                  }}
+                >
+                  <ExternalLink size={18} />
+                </a>
+              )}
+              {project.githubUrl && (
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`View ${project.title} source on GitHub`}
+                  className="flex items-center justify-center rounded-full"
+                  style={{
+                    width: 44,
+                    height: 44,
+                    background: "rgba(255,255,255,0.15)",
+                    backdropFilter: "blur(8px)",
+                    WebkitBackdropFilter: "blur(8px)",
+                    border: "1px solid rgba(255,255,255,0.25)",
+                    color: "#fff",
+                    transition:
+                      "background var(--duration-fast) var(--ease-smooth)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "var(--color-primary)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "rgba(255,255,255,0.15)";
+                  }}
+                >
+                  <Github size={18} />
+                </a>
+              )}
+            </div>
+          </div>
+
+          <h3
+            className="group-hover:text-primary"
+            style={{
+              margin: 0,
+              fontFamily: "var(--font-display)",
+              fontSize: "var(--text-xl)",
+              fontWeight: 700,
+              color: "var(--color-text-primary)",
+              marginBottom: "var(--space-2)",
+              transition: "color var(--duration-base) var(--ease-smooth)",
+            }}
+          >
+            {project.title}
+          </h3>
+
+          <p
+            style={{
+              margin: 0,
+              fontFamily: "var(--font-primary)",
+              fontSize: "var(--text-sm)",
+              lineHeight: 1.65,
+              color: "var(--color-text-secondary)",
+              display: "-webkit-box",
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+              marginBottom: "var(--space-4)",
+            }}
+          >
+            {project.description}
+          </p>
+
+          {/* Tags */}
+          <div className="flex flex-wrap gap-1.5 mt-auto">
+            {Array.isArray(project.tags) &&
+              project.tags.map((tag) => (
+                <Badge key={tag} variant="default" shape="pill">
+                  {tag}
+                </Badge>
+              ))}
+          </div>
+        </Link>
+
+        {/* ── Card footer actions ───────────────────────────────── */}
+        <div
+          className="flex items-center gap-3"
+          style={{
+            padding: "0 var(--space-5) var(--space-5)",
           }}
         >
           {project.liveUrl && (
@@ -309,22 +436,26 @@ function ProjectCard({ project }: { project: Project }) {
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`View ${project.title} live`}
-              className="flex items-center justify-center rounded-full"
+              className="inline-flex items-center gap-1.5 rounded-lg"
               style={{
-                width: 44,
-                height: 44,
-                background: "rgba(255,255,255,0.15)",
-                backdropFilter: "blur(8px)",
-                WebkitBackdropFilter: "blur(8px)",
-                border: "1px solid rgba(255,255,255,0.25)",
+                padding: "var(--space-2) var(--space-4)",
+                fontFamily: "var(--font-primary)",
+                fontSize: "var(--text-xs)",
+                fontWeight: 600,
                 color: "#fff",
-                transition: "background var(--duration-fast) var(--ease-smooth)",
+                background: "var(--gradient-primary)",
+                textDecoration: "none",
+                transition: "opacity var(--duration-fast) var(--ease-smooth)",
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "var(--color-primary)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.15)"; }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.opacity = "0.9";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.opacity = "1";
+              }}
             >
-              <ExternalLink size={18} />
+              <ExternalLink size={13} />
+              Live Demo
             </a>
           )}
           {project.githubUrl && (
@@ -332,146 +463,34 @@ function ProjectCard({ project }: { project: Project }) {
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`View ${project.title} source on GitHub`}
-              className="flex items-center justify-center rounded-full"
+              className="inline-flex items-center gap-1.5 rounded-lg"
               style={{
-                width: 44,
-                height: 44,
-                background: "rgba(255,255,255,0.15)",
-                backdropFilter: "blur(8px)",
-                WebkitBackdropFilter: "blur(8px)",
-                border: "1px solid rgba(255,255,255,0.25)",
-                color: "#fff",
-                transition: "background var(--duration-fast) var(--ease-smooth)",
+                padding: "var(--space-2) var(--space-4)",
+                fontFamily: "var(--font-primary)",
+                fontSize: "var(--text-xs)",
+                fontWeight: 600,
+                color: "var(--color-text-secondary)",
+                background: "transparent",
+                border: "1px solid var(--color-border)",
+                textDecoration: "none",
+                transition:
+                  "color var(--duration-fast) var(--ease-smooth), border-color var(--duration-fast) var(--ease-smooth)",
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "var(--color-primary)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.15)"; }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = "var(--color-primary)";
+                e.currentTarget.style.borderColor = "var(--color-primary)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = "var(--color-text-secondary)";
+                e.currentTarget.style.borderColor = "var(--color-border)";
+              }}
             >
-              <Github size={18} />
+              <Github size={13} />
+              Source
             </a>
           )}
         </div>
-      </div>
-
-      {/* ── Content ───────────────────────────────────────────── */}
-      <div
-        className="flex flex-col flex-1"
-        style={{ padding: "var(--space-5) var(--space-5) var(--space-5)" }}
-      >
-        <h3
-          style={{
-            margin: 0,
-            fontFamily: "var(--font-display)",
-            fontSize: "var(--text-xl)",
-            fontWeight: 700,
-            color: "var(--color-text-primary)",
-            marginBottom: "var(--space-2)",
-          }}
-        >
-          <Link
-            href={`/projects/${project.slug}`}
-            style={{
-              color: "inherit",
-              textDecoration: "none",
-              transition: "color var(--duration-base) var(--ease-smooth)",
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.color = "var(--color-primary)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = "inherit"; }}
-          >
-            {project.title}
-          </Link>
-        </h3>
-
-        <p
-          style={{
-            margin: 0,
-            fontFamily: "var(--font-primary)",
-            fontSize: "var(--text-sm)",
-            lineHeight: 1.65,
-            color: "var(--color-text-secondary)",
-            display: "-webkit-box",
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-            marginBottom: "var(--space-4)",
-          }}
-        >
-          {project.description}
-        </p>
-
-        {/* Tags */}
-        <div className="flex flex-wrap gap-1.5 mt-auto">
-          {Array.isArray(project.tags) && project.tags.map((tag) => (
-            <Badge key={tag} variant="default" shape="pill">
-              {tag}
-            </Badge>
-          ))}
-        </div>
-      </div>
-
-      {/* ── Card footer actions ───────────────────────────────── */}
-      <div
-        className="flex items-center gap-3"
-        style={{
-          padding: "0 var(--space-5) var(--space-5)",
-        }}
-      >
-        {project.liveUrl && (
-          <a
-            href={project.liveUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-lg"
-            style={{
-              padding: "var(--space-2) var(--space-4)",
-              fontFamily: "var(--font-primary)",
-              fontSize: "var(--text-xs)",
-              fontWeight: 600,
-              color: "#fff",
-              background: "var(--gradient-primary)",
-              textDecoration: "none",
-              transition: "opacity var(--duration-fast) var(--ease-smooth)",
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.9"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
-          >
-            <ExternalLink size={13} />
-            Live Demo
-          </a>
-        )}
-        {project.githubUrl && (
-          <a
-            href={project.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-lg"
-            style={{
-              padding: "var(--space-2) var(--space-4)",
-              fontFamily: "var(--font-primary)",
-              fontSize: "var(--text-xs)",
-              fontWeight: 600,
-              color: "var(--color-text-secondary)",
-              background: "transparent",
-              border: "1px solid var(--color-border)",
-              textDecoration: "none",
-              transition:
-                "color var(--duration-fast) var(--ease-smooth), border-color var(--duration-fast) var(--ease-smooth)",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = "var(--color-primary)";
-              e.currentTarget.style.borderColor = "var(--color-primary)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = "var(--color-text-secondary)";
-              e.currentTarget.style.borderColor = "var(--color-border)";
-            }}
-          >
-            <Github size={13} />
-            Source
-          </a>
-        )}
-      </div>
-    </GlowEffect>
+      </GlowEffect>
     </motion.article>
   );
 }
@@ -483,7 +502,9 @@ function ProjectCard({ project }: { project: Project }) {
 const INITIAL_COUNT = 6;
 const LOAD_INCREMENT = 6;
 
-export default function Projects({ projects: projectsProp }: ProjectsProps = {}) {
+export default function Projects({
+  projects: projectsProp,
+}: ProjectsProps = {}) {
   const sectionRef = useRef<HTMLElement>(null);
   const inView = useInView(sectionRef, { once: true, amount: 0.1 });
 
@@ -551,7 +572,8 @@ export default function Projects({ projects: projectsProp }: ProjectsProps = {})
           layout
           className="grid gap-7"
           style={{
-            gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 360px), 1fr))",
+            gridTemplateColumns:
+              "repeat(auto-fill, minmax(min(100%, 360px), 1fr))",
           }}
         >
           <AnimatePresence mode="popLayout">

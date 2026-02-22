@@ -63,16 +63,16 @@ function generateShapes(count: number): ShapeConfig[] {
   for (let i = 0; i < Math.min(count, 12); i++) {
     shapes.push({
       kind: kinds[Math.floor(rand() * kinds.length)],
-      size: 40 + rand() * 120,
+      size: 60 + rand() * 160,           // Larger shapes
       x: `${5 + rand() * 85}%`,
       y: `${5 + rand() * 85}%`,
-      opacity: 0.04 + rand() * 0.08,
-      blur: 20 + rand() * 40,
+      opacity: 0.08 + rand() * 0.12,     // More visible (0.08 to 0.20)
+      blur: 15 + rand() * 30,            // Less blur for sharper shapes
       duration: 18 + rand() * 14,
       delay: rand() * 6,
-      dx: 20 + rand() * 40,
-      dy: 20 + rand() * 40,
-      rotate: 10 + rand() * 30,
+      dx: 25 + rand() * 50,              // More movement
+      dy: 25 + rand() * 50,              // More movement
+      rotate: 15 + rand() * 40,          // More rotation
       color: PALETTE[Math.floor(rand() * PALETTE.length)],
     });
   }
