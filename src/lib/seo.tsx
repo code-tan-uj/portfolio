@@ -1,6 +1,6 @@
 /**
  * SEO Utilities
- * 
+ *
  * Provides SEO helpers including:
  * - Structured data (JSON-LD)
  * - Meta tag generation
@@ -14,26 +14,22 @@ import type { Metadata } from 'next';
 // ============================================
 
 export const siteConfig = {
-  name: 'Portfolio',
-  title: 'Full-Stack AI Engineer Portfolio',
-  description: 'A modern portfolio showcasing web development projects and skills.',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://yoursite.com',
+  name: 'Tanuj Sansare',
+  title: 'Tanuj Sansare | AI Engineer & Full-Stack Developer',
+  description: 'AI Engineer specializing in Generative AI, Machine Learning, and scalable full-stack systems. Explore research, production systems, and engineering projects.',
+  url: 'https://tanujsansare.cv',
   ogImage: '/og-image.png',
   creator: 'Tanuj Sansare',
   keywords: [
-    'web developer',
-    'full-stack developer',
-    'react developer',
-    'next.js developer',
-    'portfolio',
-    'frontend developer',
-    'backend developer',
+    'Tanuj Sansare',
     'AI Engineer',
-    'ML engineer',
-    'Generative AI Specialist',
     'Machine Learning Engineer',
+    'Generative AI Developer',
+    'LLM Engineer',
+    'Full Stack Developer',
+    'Next.js Developer',
     'Python Developer',
-    'Data Scientist',
+    'AI Portfolio',
   ],
   links: {
     github: "https://github.com/code-tan-uj",
@@ -62,8 +58,8 @@ export function generateMetadata({
   noIndex = false,
   canonical,
 }: PageMetadataOptions = {}): Metadata {
-  const pageTitle = title 
-    ? `${title} | ${siteConfig.name}` 
+  const pageTitle = title
+    ? `${title} | ${siteConfig.name}`
     : siteConfig.title;
   const pageDescription = description || siteConfig.description;
   const pageImage = image || siteConfig.ogImage;
@@ -76,12 +72,22 @@ export function generateMetadata({
     authors: [{ name: siteConfig.creator }],
     creator: siteConfig.creator,
     metadataBase: new URL(siteConfig.url),
-    
+
     // Robots
-    robots: noIndex 
-      ? { index: false, follow: false } 
-      : { index: true, follow: true },
-    
+    robots: noIndex
+      ? { index: false, follow: false }
+      : {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            'max-video-preview': -1,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+          },
+        },
+
     // Open Graph
     openGraph: {
       type: 'website',
@@ -99,7 +105,7 @@ export function generateMetadata({
         },
       ],
     },
-    
+
     // Twitter
     twitter: {
       card: 'summary_large_image',
@@ -108,18 +114,18 @@ export function generateMetadata({
       images: [pageImage],
       creator: '@Tanuj0181',
     },
-    
-    // Canonical
+
+    // Canonical — uses resolved pageUrl, never undefined
     alternates: {
-      canonical: canonical,
+      canonical: pageUrl,
     },
-    
+
     // Icons
     icons: {
       icon: '/favicon.ico',
       apple: '/apple-touch-icon.png',
     },
-    
+
     // Verification (add your codes)
     verification: {
       google: process.env.GOOGLE_SITE_VERIFICATION,
@@ -135,21 +141,23 @@ export function generatePersonJsonLd() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    name: siteConfig.creator,
-    url: siteConfig.url,
-    jobTitle: 'Full-Stack Developer',
+    name: 'Tanuj Sansare',
+    url: 'https://tanujsansare.cv',
+    jobTitle: 'AI Engineer',
+    description: 'AI Engineer specializing in Large Language Models, Generative AI, and scalable ML systems.',
+    image: 'https://tanujsansare.cv/profile.jpg',
     sameAs: [
       siteConfig.links.github,
       siteConfig.links.linkedin,
       siteConfig.links.twitter,
     ],
     knowsAbout: [
-      'Web Development',
-      'React',
+      'Large Language Models',
+      'Machine Learning',
+      'Generative AI',
       'Next.js',
-      'TypeScript',
-      'Node.js',
-      'JavaScript',
+      'Cloud Architecture',
+      'Distributed Systems',
     ],
   };
 }
@@ -158,13 +166,46 @@ export function generateWebsiteJsonLd() {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: siteConfig.name,
-    url: siteConfig.url,
-    description: siteConfig.description,
+    name: 'Tanuj Sansare',
+    url: 'https://tanujsansare.cv',
+    description: 'AI Engineer portfolio featuring scalable AI systems and production ML infrastructure.',
     author: {
       '@type': 'Person',
       name: siteConfig.creator,
     },
+  };
+}
+
+export function generateFaqJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'Who is Tanuj Sansare?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Tanuj Sansare is an AI Engineer specializing in generative AI, machine learning, and scalable web systems.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'What technologies does Tanuj specialize in?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'He works with LLMs, Python, Next.js, distributed systems, and cloud-native AI deployments.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Where can I find Tanuj Sansare online?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Tanuj Sansare can be found at tanujsansare.cv, on GitHub at github.com/code-tan-uj, and on LinkedIn at linkedin.com/in/tps2000.',
+        },
+      },
+    ],
   };
 }
 
